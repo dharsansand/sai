@@ -1,25 +1,24 @@
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-const jwt = require("jsonwebtoken");
+import User from "../models/User";
 
+const JWT_SECRET = process.env.JWT_SECRET_KEY;
+if (!JWT_SECRET) throw new Error("JWT_SECRET_KEY not defined in .env");
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
-// POST - Create user
-const createUser = async (req, res) => {
+// CREATE USER
+export const createUser = async (req, res) => {
   const { name, username, password } = req.body;
   try {
     const exists = await User.findOne({ username });
     if (exists) return res.status(400).json({ message: "User already exists" });
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({ name, username, password: hashedPassword });
     await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id, username: newUser.username }, JWT_SECRET, {
+    const token = jwt.sign({ id: newUser._id }, JWT_SECRET, {
       expiresIn: "1h",
     });
 
@@ -33,20 +32,18 @@ const createUser = async (req, res) => {
   }
 };
 
-
-
-const loginUser = async (req, res) => {
+// LOGIN
+export const loginUser = async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
 
     res.json({
       message: "Login successful",
@@ -58,40 +55,18 @@ const loginUser = async (req, res) => {
   }
 };
 
-
-
-const getCurrentUser = async (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  const token = authHeader.split(" ")[1];
-
+// GET ALL USERS
+export const getUsers = async (req, res) => {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    const user = await User.findById(decoded.id, "-password");
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    res.json(user);
-  } catch (err) {
-    res.status(401).json({ message: "Invalid or expired token" });
-  }
-};
-
-
-// GET - All users
-const getUsers = async (req, res) => {
-  try {
-    const users = await User.find({}, "-password"); // Exclude password
+    const users = await User.find({}, "-password");
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// GET - Single user by ID
-const getUserById = async (req, res) => {
+// GET USER BY ID
+export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id, "-password");
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -101,18 +76,16 @@ const getUserById = async (req, res) => {
   }
 };
 
-// PUT - Update user by ID
-const updateUser = async (req, res) => {
+// UPDATE USER
+export const updateUser = async (req, res) => {
   try {
     const { username, password } = req.body;
     const updatedData = { username };
+    if (password) updatedData.password = await bcrypt.hash(password, 10);
 
-    if (password) {
-      const salt = await bcrypt.genSalt(10);
-      updatedData.password = await bcrypt.hash(password, salt);
-    }
-
-    const user = await User.findByIdAndUpdate(req.params.id, updatedData, { new: true });
+    const user = await User.findByIdAndUpdate(req.params.id, updatedData, {
+      new: true,
+    });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json({ message: "User updated", user });
@@ -121,8 +94,8 @@ const updateUser = async (req, res) => {
   }
 };
 
-// DELETE - Remove user by ID
-const deleteUser = async (req, res) => {
+// DELETE USER
+export const deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -131,14 +104,5 @@ const deleteUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-};
-
-module.exports = {
-  createUser,
-  getUsers,
-  getUserById,
-  updateUser,
-  deleteUser, loginUser,
-  getCurrentUser
 };
 

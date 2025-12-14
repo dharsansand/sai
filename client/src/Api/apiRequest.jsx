@@ -3,7 +3,7 @@ import config from "../config";
 
 export const axiosInstance = async (method, endpoint, payload) => {
   try {
-    const token = localStorage.getItem("adminToken");
+    const token = localStorage.getItem("token");
     const res = await axios({
       method,
       url: endpoint,
