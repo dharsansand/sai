@@ -41,7 +41,7 @@ const AdminLoginForm = () => {
 
         alert('Login successful');
         resetForm();
-        navigate('/dashboard');
+        navigate('/admin/home');
       } else {
         alert('Login failed: No token received');
       }
@@ -57,7 +57,7 @@ const AdminLoginForm = () => {
     const token = localStorage.getItem('token');
     const expiry = localStorage.getItem('tokenExpiry');
     if (token && expiry && Date.now() < parseInt(expiry)) {
-      navigate('/dashboard');
+      navigate('/admin/home');
     }
   }, [navigate]);
 

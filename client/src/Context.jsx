@@ -1,41 +1,18 @@
 import { createContext, useContext, useState, useEffect } from "react";
-// import { getData } from "./Admin/apicalls/apiRequest";
-
 
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-  //! For admin panel
+  // Admin state
   const [adminCurrentUser, setAdminCurrentUser] = useState(null);
-  const [collapsedstate, setCollapsedstate] = useState(null);
+  const [collapsedstate, setCollapsedstate] = useState(false);
   const [token, setToken] = useState(null);
 
-  // ! windowsize
-  const FindWindowSize = () => {
-    const [windowSize, setWindowSize] = useState([
-      window.innerWidth,
-      window.innerHeight,
-    ]);
-
-    useEffect(() => {
-      const windowSizeHandler = () => {
-        setWindowSize([window.innerWidth, window.innerHeight]);
-      };
-      window.addEventListener("resize", windowSizeHandler);
-
-      return () => {
-        window.removeEventListener("resize", windowSizeHandler);
-      };
-    }, []);
-
-    return windowSize;
-  };
-
+  // Sync token from localStorage
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    setToken(token);
+    const storedToken = localStorage.getItem("token"); 
+    setToken(storedToken);
   }, []);
-
 
   return (
     <DataContext.Provider
@@ -44,7 +21,6 @@ export const DataProvider = ({ children }) => {
         setAdminCurrentUser,
         collapsedstate,
         setCollapsedstate,
-        FindWindowSize,
         token,
         setToken,
       }}

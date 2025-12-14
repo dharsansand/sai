@@ -1,43 +1,21 @@
-require("dotenv").config();
-
+require("dotenv").config(); // MUST BE FIRST
 const express = require("express");
-const  mongoose  = require("mongoose");
-const cors = require("cors");
+const mongoose = require("mongoose");
 
-const userRoutes = require("./routes/user") 
-
-const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
+const userRoutes = require("./routes/user");
 
 const app = express();
-
-const PORT = process.env.PORT;
-const MONGO_URI = process.env.MONGO_URI;
-
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("❌ Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-}
-
-app.use(cors(corsOptions));
-
 app.use(express.json());
 
-// Use environment variable for MongoDB connection
+// Connect to MongoDB
 mongoose
-  .connect(MONGO_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
 
+// Routes
+app.use("/api/users", userRoutes);
 
-  app.use("/api/users", userRoutes);
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

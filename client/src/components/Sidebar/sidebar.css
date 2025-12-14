@@ -1,0 +1,16 @@
+/* basic styles for the sidebar */
+.sidebar-logo { padding: 18px; text-align: center; color: #fff; }
+.logo-text { margin: 0; font-size: 18px; }
+.logo-mini { margin: 0; font-size: 16px; }
+
+.ps-menu-button, .ps-submenu-button { color: #d1d5db; }
+
+.sidebar-footer { padding: 12px; text-align: center; }
+.sidebar-toggle { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.08); padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+
+/* adjust content spacing when sidebar is present */
+.content-with-sidebar { margin-left: 250px; padding: 20px; }
+
+@media (max-width: 900px) {
+  .content-with-sidebar { margin-left: 0; }
+}
