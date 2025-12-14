@@ -4,6 +4,7 @@ import AdminLoginForm from "./Admin/AdminLogin";
 import Home from "./Admin/Home";
 import Layout from "./components/Layout";
 import ProtectedPage from "./common/ProtectedRoute";
+import Dashboard from "./Admin/dashbord";
 
 const App = () => {
   return (
@@ -11,11 +12,13 @@ const App = () => {
       {/* LOGIN */}
       <Route path="login" element={<AdminLoginForm />} />
 
-      {/* PROTECTED ADMIN */}
+   
       <Route element={<ProtectedPage />}>
         <Route element={<Layout />}>
-          <Route index element={<Navigate to="home" replace />} /> {/* relative */}
+          <Route index element={<Navigate to="dashboard" replace />} /> {/* relative */}
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="home" element={<Home />} />
+          
           {/* other admin routes */}
         </Route>
       </Route>

@@ -40,7 +40,7 @@
             },
           }}
         >
-          <MenuItem active={isActive("/admin/home")} icon={<FaHome />} component={<Link to="/admin/home" />}>
+          <MenuItem active={isActive("/admin/dashboard")} icon={<FaHome />} component={<Link to="/admin/dashboard" />}>
             Dashboard
           </MenuItem>
 
@@ -80,8 +80,8 @@
             </MenuItem>
           </SubMenu> */}
 
-          <MenuItem active={isActive("/admin/banner")} icon={<MdCategory />} component={<Link to="/admin/banner" />}>
-            Banner
+          <MenuItem active={isActive("/admin/Home")} icon={<MdCategory />} component={<Link to="/admin/Home" />}>
+            Home
           </MenuItem>
 
           {/* <MenuItem active={isActive("/admin/team")} icon={<MdCategory />} component={<Link to="/admin/team" />}>
@@ -91,7 +91,7 @@
 
         <div className="sidebar-footer">
           <button className="sidebar-toggle" onClick={onToggle}>
-            {collapsed ? "Open" : "Collapse"}
+            {collapsed ? "Open" : "Close"}
           </button>
         </div>
       </Sidebar>
