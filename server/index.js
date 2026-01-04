@@ -1,10 +1,26 @@
-require("dotenv").config(); // MUST BE FIRST
-const express = require("express");
-const mongoose = require("mongoose");
+import dotenv from "dotenv";
+import express from "express";
 
-const userRoutes = require("./routes/user");
+import mongoose from "mongoose";
+import cors from "cors";
 
+
+import userRoutes from "./routes/user.js";
+dotenv.config();
 const app = express();
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Connect to MongoDB

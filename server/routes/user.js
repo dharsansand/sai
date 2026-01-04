@@ -1,7 +1,7 @@
-
-import express from "express"
-import authMiddleware from "../controllers/authentication";
-import { createUser, deleteUser, getUserById, loginUser, updateUser } from "../controllers/userController";
+import express from "express";
+import authMiddleware from "../controllers/authentication.js";
+import { createUser, deleteUser, getUserById, loginUser, updateUser } from "../controllers/userController.js";
+import User from "../models/User.js";
 const router = express.Router();
 
 
@@ -10,18 +10,19 @@ const router = express.Router();
 // Auth Routes
 router.post("/login", loginUser);
 router.post("/", createUser);
-router.get("/:id", auth, getUserById);
-router.put("/:id", auth, updateUser);
-router.delete("/:id", auth, deleteUser);
 router.get("/me", authMiddleware, async (req, res) => {
-  const User = require("../models/User");
+ 
   try {
     const user = await User.findById(req.userId).select("-password");
     res.status(200).json(user);
-  } catch (err) {
+  } catch (err) { 
     res.status(500).json({ message: err.message });
   }
 });
+router.get("/:id", authMiddleware, getUserById);
+router.put("/:id", authMiddleware, updateUser);
+router.delete("/:id", authMiddleware, deleteUser);
+
 
 export default router;
 
