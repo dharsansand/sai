@@ -17,7 +17,7 @@ export const createUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new user({ name, username, password: hashedPassword });
+    const newUser = new User({ name, username, password: hashedPassword });
     await newUser.save();
 
     const token = jwt.sign({ id: newUser._id }, JWT_SECRET, {
@@ -100,11 +100,13 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    res.json({ message: "User deleted" });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    res.json({ success: true, message: "User deleted" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
+
 

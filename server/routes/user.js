@@ -2,12 +2,14 @@ import express from "express";
 import authMiddleware from "../controllers/authentication.js";
 import { createUser, deleteUser, getUserById, loginUser, updateUser } from "../controllers/userController.js";
 import User from "../models/User.js";
+import { getAll } from "../controllers/commen_controllers.js";
 const router = express.Router();
 
 
 
 
-// Auth Routes
+
+
 router.post("/login", loginUser);
 router.post("/", createUser);
 router.get("/me", authMiddleware, async (req, res) => {
@@ -19,6 +21,7 @@ router.get("/me", authMiddleware, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+router.get("/", (req, res) => getAll(req, res, User));
 router.get("/:id", authMiddleware, getUserById);
 router.put("/:id", authMiddleware, updateUser);
 router.delete("/:id", authMiddleware, deleteUser);

@@ -1,10 +1,11 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import AdminLoginForm from "./Admin/AdminLogin";
-import Home from "./Admin/Home";
+import user from "./Admin/user";
 import Layout from "./components/Layout";
 import ProtectedPage from "./common/ProtectedRoute";
 import Dashboard from "./Admin/dashbord";
+import User from "./Admin/user";
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
         <Route element={<Layout />}>
           <Route index element={<Navigate to="dashboard" replace />} /> {/* relative */}
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="home" element={<Home />} />
+          <Route path="user" element={<User />} />
           
           {/* other admin routes */}
         </Route>
