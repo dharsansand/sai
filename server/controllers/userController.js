@@ -1,7 +1,9 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import User from "../models/User";
+import User from "../models/User.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY;
 if (!JWT_SECRET) throw new Error("JWT_SECRET_KEY not defined in .env");
@@ -15,7 +17,7 @@ export const createUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ name, username, password: hashedPassword });
+    const newUser = new user({ name, username, password: hashedPassword });
     await newUser.save();
 
     const token = jwt.sign({ id: newUser._id }, JWT_SECRET, {

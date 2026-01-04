@@ -20,4 +20,19 @@ userSchema.methods.comparePassword = function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model("User", userSchema);
+userSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate();
+  if (!update.password || typeof update.password !== "string") return next();
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(update.password, salt);
+    update.password = hashedPassword;
+    next();
+  } catch (error) {
+    return next(error);
+  }
+});
+const adminuser = mongoose.model("user", userSchema);
+
+export default adminuser;
