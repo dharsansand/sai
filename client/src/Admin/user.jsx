@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
-import { Modal, Input, Popconfirm, message, Table } from "antd";
+import { Modal, Input, Popconfirm, message, Table, Switch } from "antd";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { EditOutlined, DeleteOutlined } from "@mui/icons-material";
@@ -58,19 +58,30 @@ function UserTable() {
   };
 
   /* ================= FORM ================= */
-  const initialValues = editingUser || {
-    name: "",
-    username: "",
-    email: "",
-  };
+const initialValues = editingUser
+  ? {
+      name: editingUser.name,
+      username: editingUser.username,
+      password: "",
+      active: editingUser.active ?? true,
+    }
+  : {
+      name: "",
+      username: "",
+      password: "",
+       active: true,
+    };
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name required"),
     username: Yup.string().required("Username required"),
-    email: Yup.string().email("Invalid email").required("Email required"),
+    password: Yup.string().required("Name required"),
+    active: Yup.boolean(),
+
   });
 
   const handleSubmit = async (values, { resetForm }) => {
+    console.log("values",values)
     try {
       setLoading(true);
 
@@ -93,7 +104,7 @@ function UserTable() {
         const res = await postData("users", values);
 
         if (res.data?.success) {
-          setUsers((prev) => [...prev, res.data.data]);
+          setUsers((prev) => [...prev, { ...res.data.data, active: values.active }]);
           message.success("User added");
         } else {
           message.error(res.data?.message || "Create failed");
@@ -114,7 +125,13 @@ function UserTable() {
   const columns = [
     { title: "Name", dataIndex: "name" },
     { title: "Username", dataIndex: "username" },
-    { title: "Email", dataIndex: "email" },
+
+    { 
+  title: "Active",
+  dataIndex: "active",
+  render: (v) => (v ? "True" : "False"),
+},
+
     {
       title: "Actions",
       render: (_, record) => (
@@ -174,7 +191,22 @@ function UserTable() {
           <Form>
             <FieldBlock label="Name" name="name" />
             <FieldBlock label="Username" name="username" />
-            <FieldBlock label="Email" name="email" />
+            <FieldBlock label="password" name="password" />
+            <div style={{ marginBottom: 12 }}>
+  <label>Active</label>
+  <Field name="active">
+    {({ field, form }) => (
+      <Switch
+        checked={field.value}
+        onChange={(val) => form.setFieldValue("active", val)}
+      />
+    )}
+  </Field>
+</div>
+
+
+
+            
 
             <Button type="submit" variant="contained" disabled={loading}>
               {loading ? "Saving..." : "Save"}

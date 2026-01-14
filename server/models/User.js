@@ -4,7 +4,15 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   username: { type: String, required: true, unique: true },
+  active: { type: Boolean, default: true },
+  
+
   password: { type: String, required: true },
+     createdat: {
+      type: Date,
+      default: Date.now,
+    },
+  isdelected: { type: Boolean, default: false },  
 });
 
 // Hash password before saving
