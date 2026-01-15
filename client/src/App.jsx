@@ -5,6 +5,7 @@ import Home from "./Admin/Home";
 import Layout from "./components/Layout";
 import ProtectedPage from "./common/ProtectedRoute";
 import Dashboard from "./Admin/dashbord";
+import User from "./Admin/user/user";
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
         <Route element={<Layout />}>
           <Route index element={<Navigate to="dashboard" replace />} /> {/* relative */}
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="home" element={<Home />} />
+          <Route path="user" element={<User />} />
           
           {/* other admin routes */}
         </Route>
