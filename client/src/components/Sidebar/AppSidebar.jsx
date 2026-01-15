@@ -80,8 +80,8 @@
             </MenuItem>
           </SubMenu> */}
 
-          <MenuItem active={isActive("/admin/Home")} icon={<MdCategory />} component={<Link to="/admin/Home" />}>
-            Home
+          <MenuItem active={isActive("/admin/user")} icon={<MdCategory />} component={<Link to="/admin/user" />}>
+            user
           </MenuItem>
 
           {/* <MenuItem active={isActive("/admin/team")} icon={<MdCategory />} component={<Link to="/admin/team" />}>

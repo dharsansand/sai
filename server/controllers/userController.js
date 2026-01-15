@@ -10,14 +10,14 @@ if (!JWT_SECRET) throw new Error("JWT_SECRET_KEY not defined in .env");
 
 // CREATE USER
 export const createUser = async (req, res) => {
-  const { name, username, password } = req.body;
+  const { name, username, password, Active } = req.body;
   try {
     const exists = await User.findOne({ username });
     if (exists) return res.status(400).json({ message: "User already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new user({ name, username, password: hashedPassword });
+    const newUser = new User({ name, username, password: hashedPassword, Active });
     await newUser.save();
 
     const token = jwt.sign({ id: newUser._id }, JWT_SECRET, {
@@ -38,8 +38,13 @@ export const createUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { username, password } = req.body;
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username,password });
     if (!user) return res.status(404).json({ message: "User not found" });
+      if (!user.Active) {
+      return res.status(403).json({
+        message: "Account is inactive. Please contact admin",
+      });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
@@ -81,8 +86,8 @@ export const getUserById = async (req, res) => {
 // UPDATE USER
 export const updateUser = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const updatedData = { username };
+    const {name,username, password,Active } = req.body;
+    const updatedData = { username,name,Active };
     if (password) updatedData.password = await bcrypt.hash(password, 10);
 
     const user = await User.findByIdAndUpdate(req.params.id, updatedData, {
@@ -99,10 +104,17 @@ export const updateUser = async (req, res) => {
 // DELETE USER
 export const deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { isdelete: true },  
+      { new: true }      
+    );
 
-    res.json({ message: "User deleted" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "User deleted (soft delete)", user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
