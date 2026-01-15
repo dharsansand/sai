@@ -1,93 +1,122 @@
 import { useEffect, useState } from "react";
 import AddButton from "../../components/common/addButton";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Popconfirm } from "antd";
 import OpenModel from "../../components/common/model";
 import DataTable from "../../components/common/DataTable";
-
-// Dummy data (replace with API later)
-const initialData = [
-  { _id: 1, name: "John", email: "john@gmail.com" },
-  { _id: 2, name: "Smith", email: "smith@gmail.com" },
-];
+import {
+  deleteData,
+  getData,
+  postData,
+  postOneData,
+} from "../../Api/apiRequest";
+import UservalidationSchema from "./uservalidation";
+import Text from "../../components/common/textbutton";
+import PasswordInput from "../../components/common/password";
+import Checkbox from "../../components/common/checkbox";
+import Checkinputbox from "../../components/common/checkbox";
+import { ToastSuccess } from "../../components/common/toast";
 
 const User = () => {
-  // Modal open/close
   const [open, setOpen] = useState(false);
-
-  // Table data
   const [data, setData] = useState([]);
-
-  // To check edit or add
   const [editData, setEditData] = useState(null);
 
-  // Load table data
+  // ================= FETCH USERS =================
+  const fetchUsers = async () => {
+    try {
+      const res = await getData("users");
+      setData(Array.isArray(res.data) ? res.data : []);
+    } catch (error) {
+      console.error("Failed to fetch users", error);
+    }
+  };
+
   useEffect(() => {
-    setData(initialData);
+    fetchUsers();
   }, []);
 
-  // Cancel modal
+  // ================= MODAL CANCEL =================
   const handleCancel = (formik) => {
     formik.resetForm();
     setEditData(null);
     setOpen(false);
   };
 
-  // Handle form submit (ADD / EDIT)
-  const handleSubmit = (values, actions) => {
-    if (editData) {
-      // EDIT USER
-      const updated = data.map((item) =>
-        item._id === editData._id ? { ...item, ...values } : item
-      );
-      setData(updated);
-    } else {
-      // ADD USER
-      setData([
-        ...data,
-        { _id: Date.now(), ...values },
-      ]);
-    }
+  // ================= ADD / EDIT =================
+  const handleSubmit = async (values, actions) => {
+    try {
+      if (editData) {
+        await postOneData("users", values, editData._id);
+       ToastSuccess("User Edited successfully");
 
-    actions.resetForm();
-    setEditData(null);
-    setOpen(false);
+      } else {
+        await postData("users", values);
+       ToastSuccess("User created successfully");
+
+      }
+
+      
+      await fetchUsers();
+
+      actions.resetForm();
+      setEditData(null);
+      setOpen(false);
+    } catch (error) {
+      console.error("User save failed", error);
+      ToastError("User save failed");
+    }
   };
 
-  // Edit click
+  // ================= EDIT =================
   const handleEdit = (record) => {
     setEditData(record);
     setOpen(true);
   };
 
-  // Delete click
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item._id !== id));
+  // ================= DELETE =================
+  const handleDelete = async (id) => {
+    try {
+      await deleteData("users", id);
+      setData((prev) => prev.filter((item) => item._id !== id));
+      ToastSuccess("User deleted successfully");
+    } catch (error) {
+      console.error("Delete failed", error);
+    }
   };
+  const toggleActive = async (record) => {
+  try {
+    await postOneData("users", { Active: !record.Active }, record._id);
+    ToastSuccess("User updated successfully");
+    fetchUsers();
+  } catch (err) {
+    console.error("Active toggle failed", err);
+  }
+};
 
- 
+
+  // ================= TABLE COLUMNS =================
   const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-    },
+    { title: "Name", dataIndex: "name" },
+    { title: "Username", dataIndex: "username" },
+  {
+  title: "Active",
+  render: (_, record) => (
+    <input
+      type="checkbox"
+      checked={record.Active}
+      onChange={() => toggleActive(record)}
+    />
+  ),
+},
+
     {
       title: "Action",
       render: (_, record) => (
         <>
-          {/* Edit Button */}
-          <Button
-            type="link"
-            onClick={() => handleEdit(record)}
-          >
+          <Button type="link" onClick={() => handleEdit(record)}>
             Edit
           </Button>
-
-          {/* Delete Button */}
           <Popconfirm
             title="Are you sure?"
             onConfirm={() => handleDelete(record._id)}
@@ -103,7 +132,6 @@ const User = () => {
 
   return (
     <>
-      
       <AddButton
         text="Add User"
         setOpen={() => {
@@ -112,16 +140,18 @@ const User = () => {
         }}
       />
 
-     
       <DataTable data={data} columns={columns} />
-
 
       <Formik
         enableReinitialize
         initialValues={{
           name: editData?.name || "",
-          email: editData?.email || "",
+          username: editData?.username || "",
+          password: "",
+          Active: editData?.Active ?? true,
+          isEdit: !!editData,
         }}
+        validationSchema={UservalidationSchema}
         onSubmit={handleSubmit}
       >
         {(formik) => (
@@ -133,13 +163,35 @@ const User = () => {
           >
             <Form>
               <div className="mb-3">
-                <label>Name</label>
-                <Field name="name" className="form-control" />
+                <Text
+                  text="Name"
+                  name="name"
+                  placeholder="Enter name"
+                  required={true}
+                />
               </div>
 
               <div className="mb-3">
-                <label>Email</label>
-                <Field name="email" className="form-control" />
+                <Text
+                  text="User Name"
+                  name="username"
+                  placeholder="Enter user Name"
+                  required={true}
+                />
+              </div>
+
+              {!editData && (
+                <PasswordInput
+                  text="Password"
+                  name="password"
+                  formik={formik}
+                  required={true}
+                />
+              )}
+
+              <div className="mb-3">
+               <Checkinputbox   name="Active" label="Active" />
+
               </div>
 
               <Button type="primary" htmlType="submit">

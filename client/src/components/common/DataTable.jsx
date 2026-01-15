@@ -1,17 +1,16 @@
 import React from "react";
-import { Table, Button, Popconfirm } from "antd";
+import { Table } from "antd";
 
-
-const DataTable = ({ data, columns }) => {
+const DataTable = ({ data = [], columns = [] }) => {
   return (
     <div className="table-responsive">
       <Table
-        rowKey="_id"         
-        dataSource={data}   
-        columns={columns}    
+        rowKey={(record) => record._id}   // ✅ stable key
+        dataSource={Array.isArray(data) ? data : []}
+        columns={columns}
         bordered
         pagination={{
-          pageSize: 5,       
+          pageSize: 10,
           showSizeChanger: true,
         }}
       />
