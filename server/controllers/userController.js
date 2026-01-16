@@ -15,9 +15,9 @@ export const createUser = async (req, res) => {
     const exists = await User.findOne({ username });
     if (exists) return res.status(400).json({ message: "User already exists" });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    
 
-    const newUser = new User({ name, username, password: hashedPassword, Active });
+    const newUser = new User({ name, username, password, Active });
     await newUser.save();
 
     const token = jwt.sign({ id: newUser._id }, JWT_SECRET, {
@@ -38,7 +38,7 @@ export const createUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { username, password } = req.body;
   try {
-    const user = await User.findOne({ username,password });
+    const user = await User.findOne({ username});
     if (!user) return res.status(404).json({ message: "User not found" });
       if (!user.Active) {
       return res.status(403).json({
