@@ -84,9 +84,9 @@
             user
           </MenuItem>
 
-          {/* <MenuItem active={isActive("/admin/team")} icon={<MdCategory />} component={<Link to="/admin/team" />}>
-            Team
-          </MenuItem> */}
+          <MenuItem active={isActive("/admin/branner")} icon={<MdCategory />} component={<Link to="/admin/branner" />}>
+            Branner
+          </MenuItem>
         </Menu>
 
         <div className="sidebar-footer">

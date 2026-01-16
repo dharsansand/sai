@@ -6,6 +6,7 @@ import Layout from "./components/Layout";
 import ProtectedPage from "./common/ProtectedRoute";
 import Dashboard from "./Admin/dashbord";
 import User from "./Admin/user/user";
+import Branner from "./Admin/banner/branner";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route index element={<Navigate to="dashboard" replace />} /> {/* relative */}
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="user" element={<User />} />
+          <Route path="branner" element={<Branner />} />
           
           {/* other admin routes */}
         </Route>
