@@ -32,7 +32,8 @@ app.use(express.static("uploads"));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use("/api/static", express.static(path.join(__dirname, "./uploads")));
+app.use("/api/static", express.static(path.join(__dirname, "uploads")));
+
 app.use(express.json());
 
 // Connect to MongoDB

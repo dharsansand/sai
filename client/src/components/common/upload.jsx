@@ -29,6 +29,7 @@ const CommonUpload = ({
   id,
   labelName,
 }) => {
+ 
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -37,19 +38,27 @@ const CommonUpload = ({
   // edit modal
   const [editImg, setEditImg] = useState(false);
 
-  useEffect(() => {
-    if (existingImages) {
-      const existingImagesUrl = Array.isArray(existingImages)
-        ? existingImages.map((item) => ({
-            url: `${config.imgFile}/${pdfimagepathname}/${item.url}`,
-          }))
-        : existingImages.split(",").map((url) => ({
-            url: `${config.imgFile}/${pdfimagepathname}/${url}`,
-          }));
-      setFileList(existingImagesUrl);
-    }
-    setEditImg(false);
-  }, [id && editImg ? formik?.values?.images : null]);
+ useEffect(() => {
+  if (!existingImages) return;
+
+
+
+  let existingImagesUrl = [];
+
+  if (Array.isArray(existingImages)) {
+    existingImagesUrl = existingImages.map((item) => ({
+      url: `${config.imgFile}/${pdfimagepathname}/${item.url ?? item}`,
+    }));
+  } else if (typeof existingImages === "string") {
+    existingImagesUrl = existingImages.split(",").map((url) => ({
+      url: `${config.imgFile}/${pdfimagepathname}/${url}`,
+    }));
+  }
+
+  setFileList(existingImagesUrl);
+  setEditImg(false);
+}, [editImg, id]);
+
 
   const handleCancel = () => setPreviewVisible(false);
 

@@ -13,16 +13,20 @@ import OpenModel from "../../components/common/model";
 import Checkinputbox from "../../components/common/checkbox";
 import { Button, Popconfirm } from "antd";
 import Upload from "../../components/common/upload";
+import { ToastSuccess } from "../../components/common/toast";
 
 const Branner = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
+
   const [editData, setEditData] = useState(null);
+ 
 
   const fetchUsers = async () => {
     try {
-      const res = await getData("users");
-      setData(Array.isArray(res.data) ? res.data : []);
+      const res = await getData("banner");
+      console.log("res", res);
+      setData(Array.isArray(res.data?.data) ? res.data?.data : []);
     } catch (error) {
       console.error("Failed to fetch users", error);
     }
@@ -32,28 +36,51 @@ const Branner = () => {
     fetchUsers();
   }, []);
 
-  // ================= MODAL CANCEL =================
   const handleCancel = (formik) => {
     formik.resetForm();
     setEditData(null);
     setOpen(false);
   };
 
-  // ================= ADD / EDIT =================
   const handleSubmit = async (values, actions) => {
-
-    console.log("values", values);
     try {
+      const payload = {
+        ...values,
+        banner: values.banner?.map((item) => {
+          let processedImg = [];
+
+          if (Array.isArray(item.img)) {
+            processedImg = item.img.map((img) => {
+              if (typeof img === "string") {
+                return img.includes(config.file)
+                  ? img.replace(`${config.file}/banner/`, "")
+                  : img;
+              }
+
+              if (img?.response?.file?.filename) {
+                return img.response.file.filename;
+              }
+
+              return img?.name || "";
+            });
+          }
+
+          return {
+            ...item,
+            img: processedImg,
+          };
+        }),
+      };
+
       if (editData) {
-        await postOneData("users", values, editData._id);
+        await postOneData("banner", payload, editData._id);
         ToastSuccess("User Edited successfully");
       } else {
-        await postData("users", values);
+        await postData("banner", payload);
         ToastSuccess("User created successfully");
       }
 
       await fetchUsers();
-
       actions.resetForm();
       setEditData(null);
       setOpen(false);
@@ -72,7 +99,7 @@ const Branner = () => {
   // ================= DELETE =================
   const handleDelete = async (id) => {
     try {
-      await deleteData("users", id);
+      await deleteData("banner", id);
       setData((prev) => prev.filter((item) => item._id !== id));
       ToastSuccess("User deleted successfully");
     } catch (error) {
@@ -81,7 +108,7 @@ const Branner = () => {
   };
   const toggleActive = async (record) => {
     try {
-      await postOneData("users", { Active: !record.Active }, record._id);
+      await postOneData("banner", { Active: !record.Active }, record._id);
       ToastSuccess("User updated successfully");
       fetchUsers();
     } catch (err) {
@@ -90,8 +117,8 @@ const Branner = () => {
   };
 
   const columns = [
-    { title: "Name", dataIndex: "name" },
-    { title: "Username", dataIndex: "username" },
+    { title: "Title", dataIndex: "title" },
+    { title: "subTitle", dataIndex: "subTitle" },
     {
       title: "Active",
       render: (_, record) => (
@@ -139,6 +166,7 @@ const Branner = () => {
           subTitle: editData?.subTitle || "",
           content: editData?.content || "",
           banner: editData?.banner || [{ img: "" }],
+          Active: editData?.Active ?? true,
 
           isEdit: !!editData,
         }}
