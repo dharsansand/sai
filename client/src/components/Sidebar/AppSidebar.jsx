@@ -79,14 +79,14 @@
               Brand List
             </MenuItem>
           </SubMenu> */}
-
+ <MenuItem active={isActive("/admin/branner")} icon={<MdCategory />} component={<Link to="/admin/branner" />}>
+            Branner
+          </MenuItem>
           <MenuItem active={isActive("/admin/user")} icon={<MdCategory />} component={<Link to="/admin/user" />}>
             user
           </MenuItem>
 
-          {/* <MenuItem active={isActive("/admin/team")} icon={<MdCategory />} component={<Link to="/admin/team" />}>
-            Team
-          </MenuItem> */}
+         
         </Menu>
 
         <div className="sidebar-footer">
