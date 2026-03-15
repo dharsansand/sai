@@ -16,6 +16,7 @@ import PasswordInput from "../../components/common/password";
 import Checkbox from "../../components/common/checkbox";
 import Checkinputbox from "../../components/common/checkbox";
 import { ToastSuccess } from "../../components/common/toast";
+import "../../Admin/common.css";
 
 const User = () => {
   const [open, setOpen] = useState(false);
@@ -132,13 +133,16 @@ const User = () => {
 
   return (
     <>
+       <div className="addBannerWrapper">
       <AddButton
+       className="commonAddstyle"
         text="Add User"
         setOpen={() => {
           setEditData(null);
           setOpen(true);
         }}
       />
+      </div>
 
       <DataTable data={data} columns={columns} />
 

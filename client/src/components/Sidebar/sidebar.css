@@ -14,3 +14,5 @@
 @media (max-width: 900px) {
   .content-with-sidebar { margin-left: 0; }
 }
+
+.sidebar-footer { padding: 12px; text-align: center; }

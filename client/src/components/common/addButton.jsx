@@ -7,45 +7,51 @@ const AddButton = ({
   setOpen,
   antdBtn,
   loading,
-  mb,
-  mt,
   size,
   btnLink,
   color,
   onClick,
   htmlType,
+  className
 }) => {
-  return (
-    <>
-      {antdBtn ? (
-        <Button
-          htmlType={htmlType}
-          loading={loading || null}
-          className={`${
-            color == "green" ? "form-chg-pw" : color == "red" ? "form-chg-red": "form-submit"
-          } 
-          ${mb} ${mt}`}
+  const handleClick = () => {
+    if (onClick) return onClick();
+    if (setOpen) return setOpen();
+  };
 
-        >
-          {text}
-        </Button>
-      ) : (
-        <Link to={btnLink ? btnLink : null}>
-          <button
-            className={`add__button ${size == 2 && "add__button2"} ${
-              size == 3 && "add__button3"
-            }  ${size == 4 && "add__button4"}`}
-            onClick={() => (setOpen ? setOpen((prev) => !prev) : null)}
-          >
-            <span className="add__button__text">{text}</span>
-            <span className="add__button__icon">
-              <LuPlus className="add__button__icon__1" />
-            </span>
-          </button>
-        </Link>
-      )}                  
-    </>
+  if (antdBtn) {
+    return (
+      <Button
+      
+        type="primary"
+        htmlType={htmlType || "button"}
+        loading={loading}
+        style={{ background: color }}
+        onClick={handleClick}
+        className={className}
+      >
+        {text}
+      </Button>
+    );
+  }
+
+  const ButtonContent = (
+    <button
+      className={`add__button ${className} 
+      ${size === 2 ? "add__button2" : ""} 
+      ${size === 3 ? "add__button3" : ""} 
+      ${size === 4 ? "add__button4" : ""}`}
+      onClick={handleClick}
+    >
+      <span className="add__button__text">{text}</span>
+
+      <span className="add__button__icon">
+        <LuPlus />
+      </span>
+    </button>
   );
+
+  return btnLink ? <Link to={btnLink}>{ButtonContent}</Link> : ButtonContent;
 };
 
 export default AddButton;

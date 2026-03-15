@@ -29,6 +29,7 @@ const CommonUpload = ({
   id,
   labelName,
 }) => {
+
  
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
@@ -224,8 +225,7 @@ const CommonUpload = ({
       <ErrorMessage
         name={name}
         component="div"
-        className="userformhead__formErr"
-      />
+        className="text-danger"  />
       <Modal
         open={previewVisible}
         title={previewTitle}
