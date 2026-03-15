@@ -1,0 +1,52 @@
+.commonAddstyle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+
+}
+
+.addBannerWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.add__button {
+  display: flex;
+  align-items: center;
+  background-color: #3971eb; 
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  gap: 8px;
+}
+
+.add__button:hover {
+  background-color: #7fb6a4;
+}
+
+.add__button__icon {
+  display: flex;
+  align-items: center;
+}
+@media (max-width:768px){
+    .commonAddstyle{
+        justify-content: center; 
+    }
+
+  .add__button{
+    width:100%;
+    padding:10px;
+    font-size:14px;
+    align-items: center;
+
+  }
+
+  .add__button__icon{
+    margin-left:6px;
+  }
+
+}

@@ -14,13 +14,13 @@ import Checkinputbox from "../../components/common/checkbox";
 import { Button, Popconfirm } from "antd";
 import Upload from "../../components/common/upload";
 import { ToastSuccess } from "../../components/common/toast";
-
+import BrannervalidationSchema from "./brannervalidation";
+import "../../Admin/common.css";
 const Branner = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
 
   const [editData, setEditData] = useState(null);
- 
 
   const fetchUsers = async () => {
     try {
@@ -151,13 +151,21 @@ const Branner = () => {
   ];
   return (
     <>
-      <AddButton
-        text="Add Banner"
-        setOpen={() => {
-          setEditData(null);
-          setOpen(true);
-        }}
-      />
+      <div className="addBannerWrapper">
+        <AddButton
+          className="
+          
+          
+          
+          "
+          text="Add Banner"
+       
+          setOpen={() => {
+            setEditData(null);
+            setOpen(true);
+          }}
+        />
+      </div>
       <DataTable data={data} columns={columns} />
       <Formik
         enableReinitialize
@@ -170,7 +178,7 @@ const Branner = () => {
 
           isEdit: !!editData,
         }}
-        // validationSchema={UservalidationSchema}
+        validationSchema={BrannervalidationSchema}
         onSubmit={handleSubmit}
       >
         {(formik) => (

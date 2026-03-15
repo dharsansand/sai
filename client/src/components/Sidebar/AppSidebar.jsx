@@ -46,39 +46,6 @@
 
           
 
-          {/* <MenuItem active={isActive("/admin/blog")} icon={<FaBlog />} component={<Link to="/admin/blog" />}>
-            Blog
-          </MenuItem>
-
-          <MenuItem active={isActive("/admin/gallery")} icon={<RiGalleryLine />} component={<Link to="/admin/gallery" />}>
-            Gallery
-          </MenuItem>
-
-          <MenuItem active={isActive("/admin/contact")} icon={<MdOutlineContactMail />} component={<Link to="/admin/contact" />}>
-            Contact
-          </MenuItem> */}
-
-          {/* <MenuItem active={isActive("/admin/career")} icon={<FaUserTie />} component={<Link to="/admin/career" />}>
-            Career
-          </MenuItem> */}
-
-          {/* <SubMenu icon={<MdCategory />} label="Category">
-            <MenuItem active={isActive("/admin/category")} component={<Link to="/admin/category" />}>
-              Category
-            </MenuItem>
-            <MenuItem active={isActive("/admin/categorydetails")} component={<Link to="/admin/categorydetails" />}>
-              Category Details
-            </MenuItem>
-          </SubMenu> */}
-
-          {/* <SubMenu icon={<MdCategory />} label="Brand">
-            <MenuItem active={isActive("/admin/brand")} component={<Link to="/admin/brand" />}>
-              Brand Category
-            </MenuItem>
-            <MenuItem active={isActive("/admin/brandlist")} component={<Link to="/admin/brandlist" />}>
-              Brand List
-            </MenuItem>
-          </SubMenu> */}
  <MenuItem active={isActive("/admin/branner")} icon={<MdCategory />} component={<Link to="/admin/branner" />}>
             Branner
           </MenuItem>
