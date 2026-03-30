@@ -10,6 +10,7 @@ import bodyParser from "body-parser";
 
 import userRoutes from "./routes/user.js";
 import brannerRoutes from "./routes/branner.js";
+import categoryRoutes from "./routes/category.js"
 dotenv.config();
 const app = express();
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
@@ -45,6 +46,7 @@ mongoose
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/banner", brannerRoutes);
+app.use("/api/category",categoryRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;

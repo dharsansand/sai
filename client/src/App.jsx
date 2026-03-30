@@ -7,6 +7,7 @@ import ProtectedPage from "./common/ProtectedRoute";
 import Dashboard from "./Admin/dashbord";
 import User from "./Admin/user/user";
 import Branner from "./Admin/banner/branner";
+import Category from "./Admin/category/category";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="user" element={<User />} />
           <Route path="branner" element={<Branner />} />
+          <Route path="category" element={<Category/>} />
           
           {/* other admin routes */}
         </Route>

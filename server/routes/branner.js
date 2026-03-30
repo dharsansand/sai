@@ -1,7 +1,7 @@
 import express from "express";
 import createMulterMiddleware from "../controllers/upload.js";
 import banner from "../models/banner.js"
-import { bannerImageUpload } from "../controllers/banner_controller.js";
+import { ImageUpload } from "../controllers/banner_controller.js";
 import { create, deleteOne, getAll, updateById } from "../controllers/common_controllers.js";
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.delete("/:id",(req,res)=>deleteOne(req,res,banner));
 router.post(
   "/banner",
   createMulterMiddleware("uploads/banner").single("file"),
-  bannerImageUpload
+  ImageUpload
  
 );
 

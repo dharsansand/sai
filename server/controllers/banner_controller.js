@@ -1,4 +1,4 @@
-export const bannerImageUpload = async (req, res) => {
+export const ImageUpload = async (req, res) => {
   try {
     if (!req.file) {
       return res.status(404).json({ message: "No File Uploaded" });

@@ -49,6 +49,10 @@
  <MenuItem active={isActive("/admin/branner")} icon={<MdCategory />} component={<Link to="/admin/branner" />}>
             Branner
           </MenuItem>
+           <MenuItem active={isActive("/admin/category")} icon={<MdCategory />} component={<Link to="/admin/category" />}>
+            category
+          </MenuItem>
+
           <MenuItem active={isActive("/admin/user")} icon={<MdCategory />} component={<Link to="/admin/user" />}>
             user
           </MenuItem>

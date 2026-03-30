@@ -1,32 +1,25 @@
 import React, { useState } from "react";
-import AppSidebar from "./AppSidebar";
+import { Outlet } from "react-router-dom";
+import AppSidebar from "../components/Sidebar/AppSidebar";
 
-export default function Layout({ children }) {
-
+const Layout = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [toggled, setToggled] = useState(false);
 
   return (
     <div style={{ display: "flex" }}>
-
-      <AppSidebar
-        collapsed={collapsed}
-        toggled={toggled}
-        setToggled={setToggled}
-        onToggle={() => setCollapsed(!collapsed)}
-      />
-
-      <main className="content-with-sidebar">
-        <button
-          className="mobile-menu-btn"
-          onClick={() => setToggled(true)}
-        >
-          ☰
-        </button>
-
-        {children}
-      </main>
-
+      <AppSidebar collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
+      <div
+        style={{
+          marginLeft: collapsed ? 80 : 250,
+          transition: "margin-left 200ms",
+          width: "100%",
+          padding: "20px",
+        }}
+      >
+        <Outlet />
+      </div>
     </div>
   );
-}
+};
+
+export default Layout;
