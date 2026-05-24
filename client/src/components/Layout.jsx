@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AppSidebar from "./AppSidebar";
+import AppSidebar from "./Sidebar/AppSidebar";
 
 export default function Layout({ children }) {
 
