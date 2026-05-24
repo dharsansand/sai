@@ -17,12 +17,11 @@ const App = () => {
    
       <Route element={<ProtectedPage />}>
         <Route element={<Layout />}>
-          <Route index element={<Navigate to="dashboard" replace />} /> {/* relative */}
+          <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="user" element={<User />} />
           <Route path="branner" element={<Branner />} />
           
-          {/* other admin routes */}
         </Route>
       </Route>
 
