@@ -39,8 +39,8 @@ app.use(express.static("public"));
 app.use(express.static("uploads"));
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use("/api/static", express.static(path.join(__dirname, "uploads")));
+// const __dirname = path.dirname(__filename);
+app.use("/api/static", express.static(path.join(process.cwd(), "uploads")));
 
 app.use(express.json());
 
