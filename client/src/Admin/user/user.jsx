@@ -15,7 +15,7 @@ import Text from "../../components/common/textbutton";
 import PasswordInput from "../../components/common/password";
 
 import Checkinputbox from "../../components/common/checkbox";
-import { ToastSuccess } from "../../components/common/toast";
+import { ToastSuccess, ToastError } from "../../components/common/toast";
 import "../../Admin/common.css";
 
 const User = () => {
