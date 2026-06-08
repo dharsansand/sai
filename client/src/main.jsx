@@ -23,8 +23,8 @@ const RootComponent = () => {
         />
       <DataProvider>
         <Routes>
-          <Route path="/*" element={<View />} />
-          <Route path="/admin/*" element={<App />} />
+        <Route path="/admin/*" element={<App />} />
+  <Route path="/*" element={<View />} />
         </Routes>
       </DataProvider>
     </BrowserRouter>
