@@ -16,9 +16,9 @@ export default function Layout() {
       />
 
       <main className="content-with-sidebar" style={{ flexGrow: 1 }}>
-        <button className="mobile-menu-btn" onClick={() => setToggled(true)}>
+        {/* <button className="mobile-menu-btn" onClick={() => setToggled(true)}>
           ☰
-        </button>
+        </button> */}
 
         <Outlet /> 
       </main>
