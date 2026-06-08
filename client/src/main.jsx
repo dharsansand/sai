@@ -24,7 +24,7 @@ const RootComponent = () => {
       <DataProvider>
         <Routes>
         <Route path="/admin/*" element={<App />} />
-  <Route path="/*" element={<View />} />
+           <Route path="/*" element={<View />} />
         </Routes>
       </DataProvider>
     </BrowserRouter>
