@@ -10,10 +10,10 @@ import {
   postData,
   postOneData,
 } from "../../Api/apiRequest";
-import UservalidationSchema from "./uservalidation";
+import uservalidationSchema from "./uservalidation";
 import Text from "../../components/common/textbutton";
 import PasswordInput from "../../components/common/password";
-import Checkbox from "../../components/common/checkbox";
+
 import Checkinputbox from "../../components/common/checkbox";
 import { ToastSuccess } from "../../components/common/toast";
 import "../../Admin/common.css";
@@ -155,7 +155,7 @@ const User = () => {
           Active: editData?.Active ?? true,
           isEdit: !!editData,
         }}
-        validationSchema={UservalidationSchema}
+        validationSchema={uservalidationSchema}
         onSubmit={handleSubmit}
       >
         {(formik) => (

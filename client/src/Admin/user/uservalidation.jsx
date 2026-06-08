@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-const UservalidationSchema = Yup.object({
+const uservalidationSchema = Yup.object({
   name: Yup.string()
     .required("Name is required"),
 
@@ -18,5 +18,5 @@ const UservalidationSchema = Yup.object({
  
 });
 
-export default  UservalidationSchema
+export default  uservalidationSchema
 
