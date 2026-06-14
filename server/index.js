@@ -40,7 +40,13 @@ app.use(express.static("uploads"));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use("/api/static", express.static(path.resolve(__dirname, "uploads")));
+const uploadsPath = path.join(process.cwd(), "uploads");
+console.log("Serving static files from:", uploadsPath);
+if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath, { recursive: true });
+}
+
+app.use("/api/static", express.static(uploadsPath));
 app.use(express.json());
 
 // Connect to MongoDB
