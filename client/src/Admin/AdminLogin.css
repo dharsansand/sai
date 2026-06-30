@@ -94,8 +94,8 @@
 /* Focus state */
 .admin-login-form .ant-input:focus,
 .admin-login-form .ant-input-affix-wrapper-focused {
-  border-color: #5227FF !important;
-  background-color: rgba(255, 255, 255, 0.1) !important;
+border-color: #FFD700 !important; /* Bright Gold on focus */
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.2) !important;
 }
 
 /* Password Eye Icon color */
