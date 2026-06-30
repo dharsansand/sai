@@ -1,0 +1,156 @@
+/* Container to occupy full screen */
+.admin-page-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #050400; /* Fallback color */
+}
+
+/* Background layer behind the form */
+.background-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Glassmorphism login card */
+.admin-login-container {
+  z-index: 10;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.admin-login-form {
+  background: rgba(20, 20, 10, 0.4); /* Darker glass for gold theme */
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  /* Gold border for the card */
+  border: 1px solid rgba(212, 175, 55, 0.3); 
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+.form-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-header h2 {
+  color: #ffffff;
+  font-size: 26px;
+  margin-bottom: 8px;
+}
+
+.form-header p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  color: #F9E2AF; /* Soft Gold Label */
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* --- Fixing the Input Boxes (Ant Design Overrides) --- */
+
+/* Standard Input and Password Wrapper */
+.admin-login-form .ant-input,
+.admin-login-form .ant-input-affix-wrapper {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  /* Soft gold border for inputs */
+  border: 1px solid rgba(212, 175, 55, 0.3) !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  padding: 10px 15px !important;
+}
+/* Remove internal extra borders/outlines */
+.admin-login-form .ant-input-affix-wrapper > input.ant-input {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* Placeholder color */
+.admin-login-form .ant-input::placeholder,
+.admin-login-form .ant-input-affix-wrapper input::placeholder {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Focus state */
+.admin-login-form .ant-input:focus,
+.admin-login-form .ant-input-affix-wrapper-focused {
+  border-color: #5227FF !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Password Eye Icon color */
+.admin-login-form .ant-input-password-icon {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Error State styling */
+.is-invalid {
+  border-color: #ff4d4f !important;
+}
+
+.form-error {
+  color: #ff7875; /* Brighter red for better visibility */
+  font-size: 13px;
+  margin-top: 6px;
+  text-align: left;
+}
+
+/* Login Button */
+.login-button {
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  /* Gold Gradient Button */
+  background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%) !important;
+  border: none !important;
+  color: #000 !important; /* Dark text on gold button looks premium */
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, #FFD700 0%, #FFF3A0 100%) !important;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  transform: translateY(-2px);
+}
+
+/* --- Responsive Adjustments --- */
+
+@media (max-width: 768px) {
+  .admin-login-container {
+    max-width: 90%;
+  }
+  .admin-login-form {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-header h2 {
+    font-size: 22px;
+  }
+}
