@@ -42,53 +42,36 @@ const Branner = () => {
     setOpen(false);
   };
 
-  const handleSubmit = async (values, actions) => {
-    try {
-      const payload = {
-        ...values,
-        banner: values.banner?.map((item) => {
-          let processedImg = [];
+const handleSubmit = async (values, actions) => {
+  try {
+    const payload = {
+      title: values.title,
+      subTitle: values.subTitle,
+      content: values.content,
+      Active: values.Active,
+      banner: values.banner,
+    };
 
-          if (Array.isArray(item.img)) {
-            processedImg = item.img.map((img) => {
-              if (typeof img === "string") {
-                return img.includes(config.file)
-                  ? img.replace(`${config.file}/banner/`, "")
-                  : img;
-              }
+    console.log(payload);
 
-              if (img?.response?.file?.filename) {
-                return img.response.file.filename;
-              }
-
-              return img?.name || "";
-            });
-          }
-
-          return {
-            ...item,
-            img: processedImg,
-          };
-        }),
-      };
-
-      if (editData) {
-        await postOneData("banner", payload, editData._id);
-        ToastSuccess("User Edited successfully");
-      } else {
-        await postData("banner", payload);
-        ToastSuccess("User created successfully");
-      }
-
-      await fetchUsers();
-      actions.resetForm();
-      setEditData(null);
-      setOpen(false);
-    } catch (error) {
-      console.error("User save failed", error);
-      ToastError("User save failed");
+    if (editData) {
+      await postOneData("banner", payload, editData._id);
+      ToastSuccess("Banner Updated Successfully");
+    } else {
+      await postData("banner", payload);
+      ToastSuccess("Banner Added Successfully");
     }
-  };
+
+    fetchUsers();
+    setOpen(false);
+    setEditData(null);
+    actions.resetForm();
+  } catch (error) {
+    console.error(error);
+  } finally {
+    actions.setSubmitting(false);
+  }
+};
 
   // ================= EDIT =================
   const handleEdit = (record) => {
@@ -217,16 +200,14 @@ const Branner = () => {
 
               <div className="mb-3">
                 {formik.values.banner?.map((item, index) => (
-                  <Upload
-                    key={index}
-                    formik={formik}
-                    name={`banner.${index}.img`}
-                    limit={1}
-                    existingImages={item.img || []}
-                    pdfimagepathname="banner"
-                    settingname="banner"
-                    banner={item.mobile ? null : "banner"}
-                  />
+                 <Upload
+  formik={formik}
+  name={`banner.${index}.img`}
+  limit={1}
+  existingImages={item.img}
+  pdfimagepathname="banner"
+  settingname="banner"
+/>
                 ))}
               </div>
 

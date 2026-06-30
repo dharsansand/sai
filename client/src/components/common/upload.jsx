@@ -39,26 +39,34 @@ const CommonUpload = ({
   // edit modal
   const [editImg, setEditImg] = useState(false);
 
- useEffect(() => {
-  if (!existingImages) return;
-
-
-
-  let existingImagesUrl = [];
-
-  if (Array.isArray(existingImages)) {
-    existingImagesUrl = existingImages.map((item) => ({
-      url: `${config.imgFile}/${pdfimagepathname}/${item.url ?? item}`,
-    }));
-  } else if (typeof existingImages === "string") {
-    existingImagesUrl = existingImages.split(",").map((url) => ({
-      url: `${config.imgFile}/${pdfimagepathname}/${url}`,
-    }));
+useEffect(() => {
+  if (!existingImages) {
+    setFileList([]);
+    return;
   }
 
-  setFileList(existingImagesUrl);
-  setEditImg(false);
-}, [editImg, id]);
+  let files = [];
+
+  if (Array.isArray(existingImages)) {
+    files = existingImages.map((img, index) => ({
+      uid: index.toString(),
+      name: `image-${index}`,
+      status: "done",
+      url: typeof img === "string" ? img : img.url,
+    }));
+  } else if (typeof existingImages === "string") {
+    files = [
+      {
+        uid: "-1",
+        name: "image",
+        status: "done",
+        url: existingImages,
+      },
+    ];
+  }
+
+  setFileList(files);
+}, [existingImages]);
 
 
   const handleCancel = () => setPreviewVisible(false);
@@ -72,13 +80,30 @@ const CommonUpload = ({
     setPreviewVisible(true);
   };
 
-  const handleChange = ({ fileList: newFileList }, setFieldValue) => {
-    setFileList(newFileList);
-    setFieldValue(name, newFileList);
-    if (setFileUploaded) {
-      setFileUploaded(newFileList.length > 0);
+const handleChange = ({ fileList: newFileList }, setFieldValue) => {
+  setFileList(newFileList);
+
+  let value = "";
+
+  if (newFileList.length > 0) {
+    const file = newFileList[0];
+
+    // Newly uploaded image
+    if (file.response?.file?.filename) {
+      value = file.response.file.filename;
     }
-  };
+    // Existing image while editing
+    else if (file.url) {
+      value = file.url;
+    }
+  }
+
+  setFieldValue(name, value);
+
+  if (setFileUploaded) {
+    setFileUploaded(newFileList.length > 0);
+  }
+};
 
   const uploadButton = (
     <div>
@@ -87,19 +112,22 @@ const CommonUpload = ({
     </div>
   );
 
-  const customRequest = async ({ file, onSuccess, onError }) => {
+const customRequest = async ({ file, onSuccess, onError }) => {
+  try {
     const formData = new FormData();
     formData.append("file", file);
 
-    await postData(`${settingname}/${pdfimagepathname}`, formData)
-      .then((response) => {
-        onSuccess(response.data);
-      })
-      .catch((error) => {
-        console.error("Upload error:", error);
-        onError(error);
-      });
-  };
+    const response = await postData(
+      `${settingname}/${pdfimagepathname}`,
+      formData
+    );
+
+    onSuccess(response.data);
+  } catch (err) {
+    console.error(err);
+    onError(err);
+  }
+};
 
   const props = {
     beforeUpload: (file) => {

@@ -10,6 +10,6 @@
 
 const config = {
   apiUrl: "https://saiapi-knmy.onrender.com/api",
-  imgFile: "https://saiapi-knmy.onrender.com/api/static"
+//   imgFile: "https://saiapi-knmy.onrender.com/api/static"
 };
 export default config;  

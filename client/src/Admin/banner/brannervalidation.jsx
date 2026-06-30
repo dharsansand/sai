@@ -5,16 +5,15 @@ const BrannervalidationSchema = Yup.object({
 
     subTitle: Yup.string().required("Sub Title is required"),
     content: Yup.string().required("Content is required"),
-   banner: Yup.array()
+  banner: Yup.array()
     .of(
-      Yup.object().shape({
-        img: Yup.array()
-          .min(1, "Banner image is required")
+      Yup.object({
+        img: Yup.string()
+          .url("Invalid image URL")
           .required("Banner image is required"),
       })
     )
-    .min(1, "Banner is required")
-    .required("Banner is required"),
+    .min(1, "Banner is required"),
 });
 
 export default BrannervalidationSchema
