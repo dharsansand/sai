@@ -3,6 +3,7 @@ const bannerSchema = new mongoose.Schema({
     title : { type: String, required: true },
     subTitle : { type: String },
     content :{ type: String },
+    highlight:{type:String},
     banner :{type:Array,required:true},
     Active: { type: Boolean, default: false  },
     isdelete :{ type: Boolean, default: false  },

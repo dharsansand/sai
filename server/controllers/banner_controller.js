@@ -1,3 +1,5 @@
+import banner from "../models/banner.js";
+
 export const bannerImageUpload = async (req, res) => {
   try {
     if (!req.file) {
@@ -14,5 +16,23 @@ export const bannerImageUpload = async (req, res) => {
   } catch (error) {
     console.error("Server Error:", error.message);
     res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const homeBranner = async (req, res) => {
+  try {
+  
+    const banners = await banner.find({ Active: true }).sort({ createdAt: -1 });
+
+ 
+    res.status(200).json(banners);
+    
+  } catch (error) {
+    // Handle potential errors
+    res.status(500).json({ 
+        message: "Error fetching banner data", 
+        error: error.message 
+    });
   }
 };

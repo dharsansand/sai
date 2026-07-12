@@ -50,6 +50,7 @@ const handleSubmit = async (values, actions) => {
       content: values.content,
       Active: values.Active,
       banner: values.banner,
+      highlight:values.highlight
     };
 
     console.log(payload);
@@ -158,6 +159,7 @@ const handleSubmit = async (values, actions) => {
           content: editData?.content || "",
           banner: editData?.banner || [{ img: "" }],
           Active: editData?.Active ?? true,
+          highlight:editData?.highlight||"",
 
           isEdit: !!editData,
         }}
@@ -188,6 +190,14 @@ const handleSubmit = async (values, actions) => {
                   placeholder="Enter subTitle"
                   required={true}
                 />
+                 <div className="mb-3">
+                <Text
+                  text="highlight"
+                  name="highlight"
+                  placeholder="Enter highlight"
+                  // required={true}
+                />
+              </div>
               </div>
               <div className="mb-3">
                 <Text

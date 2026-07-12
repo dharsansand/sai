@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiArrowRight, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import '../css/banner/Banner.css';
+import { getData } from '../Api/apiRequest';
 
 const bannerData = [
   {
@@ -31,24 +32,46 @@ const bannerData = [
 ];
 
 const Banner = () => {
+  const [bannerData, setBannerData] = useState([]);
   const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const fetchBanner = async () => {
+      try {
+        const response = await getData("banner/home");
+        // Check if response is the array directly or contains a .data property
+        const data = response?.data || response;
+        setBannerData(data);
+      } catch (error) {
+        console.error("Error fetching banner data:", error);
+      }
+    };
+    fetchBanner();
+  }, []);
+
   const length = bannerData.length;
 
   const nextSlide = (e) => {
-    e?.stopPropagation(); // Prevent the click from affecting other layers
+    e?.stopPropagation();
     setCurrent(current === length - 1 ? 0 : current + 1);
   };
 
   const prevSlide = (e) => {
-    e?.stopPropagation(); // Prevent the click from affecting other layers
-    setCurrent(current === 0 ? length - 1 : current - 1); // Fixed: current - 1
+    e?.stopPropagation();
+    setCurrent(current === 0 ? length - 1 : current - 1);
   };
+
+  if (!bannerData || bannerData.length === 0) {
+    return <div className="loader">Loading...</div>;
+  }
+
+  const currentItem = bannerData[current];
 
   return (
     <section className="banner">
       <AnimatePresence mode='wait'>
         <motion.div 
-          key={current} 
+          key={currentItem._id} 
           className="banner__slide"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -57,9 +80,10 @@ const Banner = () => {
         >
           <div className="banner__bg-wrapper">
              <div className="banner__overlay"></div>
+             {/* Map image from the banner array */}
              <motion.img 
-                src={bannerData[current].image} 
-                alt="banner" 
+                src={currentItem.banner[0]?.img} 
+                alt={currentItem.title} 
                 className="banner__bg-image"
                 initial={{ scale: 1.1 }}
                 animate={{ scale: 1 }}
@@ -69,15 +93,21 @@ const Banner = () => {
 
           <div className="banner__container">
             <div className="banner__content">
+             
               <motion.span className="banner__subtitle" initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay: 0.2}}>
-                {bannerData[current].subtitle}
+                {currentItem.subTitle}
               </motion.span>
+
+              {/* Map title and highlight */}
               <motion.h1 className="banner__title" initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay: 0.4}}>
-                {bannerData[current].title} <span className="highlight">{bannerData[current].highlight}</span>
+                {currentItem.title} <span className="highlight">{currentItem.highlight}</span>
               </motion.h1>
+
+              {/* Map content */}
               <motion.p className="banner__description" initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay: 0.6}}>
-                {bannerData[current].description}
+                {currentItem.content}
               </motion.p>
+
               <motion.div className="banner__actions" initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay: 0.8}}>
                 <button className="banner__btn-primary">Contact Us <HiArrowRight /></button>
               </motion.div>
@@ -86,23 +116,16 @@ const Banner = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* FIXED NAVIGATION AREA */}
-      <div className="banner__nav">
-        <button 
-          className="nav-btn" 
-          onClick={(e) => prevSlide(e)}
-          type="button"
-        >
-          <HiChevronLeft />
-        </button>
-        <button 
-          className="nav-btn" 
-          onClick={(e) => nextSlide(e)}
-          type="button"
-        >
-          <HiChevronRight />
-        </button>
-      </div>
+{length > 1 && (
+  <div className="banner__nav">
+    <button className="nav-btn" onClick={prevSlide} type="button">
+      <HiChevronLeft />
+    </button>
+    <button className="nav-btn" onClick={nextSlide} type="button">
+      <HiChevronRight />
+    </button>
+  </div>
+)}
 
       <div className="banner__dots">
         {bannerData.map((_, idx) => (
@@ -118,3 +141,4 @@ const Banner = () => {
 };
 
 export default Banner;
+
