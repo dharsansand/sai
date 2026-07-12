@@ -8,6 +8,7 @@ import { jwtDecode } from 'jwt-decode';
 import config from '../config';
 import Lightfall from './Lightfall'
 import './AdminLogin.css';
+import { ToastSuccess } from '../components/common/toast';
 
 const AdminLoginForm = () => {
   const navigate = useNavigate();
@@ -34,9 +35,9 @@ const AdminLoginForm = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        localStorage.setItem('currentUser', JSON.stringify(userRes.data)); 
-        alert('Login successful');
-        resetForm();
+        localStorage.setItem('current   aUser', JSON.stringify(userRes.data)); 
+              ToastSuccess("Login Successfully");
+               resetForm();
         navigate('/admin/dashboard');
       } else {
         alert('Login failed: No token received');
