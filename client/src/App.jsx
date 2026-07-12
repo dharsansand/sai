@@ -12,7 +12,7 @@ const App = () => {
   return (
     <Routes>
       {/* LOGIN */}
-      <Route path="login" element={<AdminLoginForm />} />
+      <Route path="login" element={<AdminLoginForm />}  />
 
    
       <Route element={<ProtectedPage />}>
