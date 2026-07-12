@@ -1,66 +1,71 @@
-  import React from "react";
-  import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-  import { Link, useLocation } from "react-router-dom";
-  import { FaHome, FaUsers, FaBlog, FaUserTie } from "react-icons/fa";
-  import { RiGalleryLine } from "react-icons/ri";
-  import { MdCategory, MdOutlineContactMail } from "react-icons/md";
-  import "./sidebar.css";
+import { Link, useLocation } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
+import { MdCategory } from "react-icons/md";
+import "./sidebar.css";
+import { IoCloseCircle } from "react-icons/io5";
 
-  export default function AppSidebar({ collapsed, onToggle }) {
+export default function AppSidebar({
+  collapsed,
+  mobileOpen,
+  isMobile,
+  onToggle,
+  setMobileOpen,
+}) {
+  const location = useLocation();
 
-    const location = useLocation();
+  const isActive = (path) =>
+    location.pathname === path ||
+    location.pathname.startsWith(path + "/");
 
-    const isActive = (path) => {
-      if (!path) return false;
-      return location.pathname === path || location.pathname.startsWith(path + "/");
-    };
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setMobileOpen(false);
+    }
+  };
 
-    return (
-      <Sidebar
-        collapsed={collapsed}
-        transitionDuration={200}
-        backgroundColor="#0f172a"
-        style={{ height: "100vh", position: "fixed", left: 0, top: 0 }}
+  return (
+    <>
+      <div
+        className={`sidebar-overlay ${mobileOpen ? "show" : ""}`}
+        onClick={() => setMobileOpen(false)}
+      />
+
+      <aside
+        className={`sidebar ${
+          !isMobile && collapsed ? "collapsed" : ""
+        } ${isMobile && mobileOpen ? "mobile-open" : ""}`}
       >
-        <div className="sidebar-logo">
-          {!collapsed ? (
-            <h2 className="logo-text">Admin Panel</h2>
-          ) : (
-            <h3 className="logo-mini">AP</h3>
-          )}
-        </div>
+        <div className="sidebar-header">
+          <h2>{collapsed && !isMobile ? "AP" : "Admin Panel"}</h2>
 
-        <Menu
-          menuItemStyles={{
-            button: {
-              "&.ps-active": {
-                backgroundColor: "#1f2937",
-                color: "#fff",
-              },
-            },
-          }}
-        >
-          <MenuItem active={isActive("/admin/dashboard")} icon={<FaHome />} component={<Link to="/admin/dashboard" />}>
-            Dashboard
-          </MenuItem>
-
-          
-
- <MenuItem active={isActive("/admin/branner")} icon={<MdCategory />} component={<Link to="/admin/branner" />}>
-            Branner
-          </MenuItem>
-          <MenuItem active={isActive("/admin/user")} icon={<MdCategory />} component={<Link to="/admin/user" />}>
-            user
-          </MenuItem>
-
-         
-        </Menu>
-
-        <div className="sidebar-footer">
-          <button className="sidebar-toggle" onClick={onToggle}>
-            {collapsed ? "Open" : "Close"}
+          <button className="collapse-btn" onClick={onToggle}>
+            <IoCloseCircle />
           </button>
         </div>
-      </Sidebar>
-    );
-  }
+
+        <ul className="sidebar-menu">
+          <li className={isActive("/admin/dashboard") ? "active" : ""}>
+            <Link to="/admin/dashboard" onClick={handleMenuClick}>
+              <FaHome />
+              {(!collapsed || isMobile) && <span>Dashboard</span>}
+            </Link>
+          </li>
+
+          <li className={isActive("/admin/branner") ? "active" : ""}>
+            <Link to="/admin/branner" onClick={handleMenuClick}>
+              <MdCategory />
+              {(!collapsed || isMobile) && <span>Branner</span>}
+            </Link>
+          </li>
+
+          <li className={isActive("/admin/user") ? "active" : ""}>
+            <Link to="/admin/user" onClick={handleMenuClick}>
+              <MdCategory />
+              {(!collapsed || isMobile) && <span>User</span>}
+            </Link>
+          </li>
+        </ul>
+      </aside>
+    </>
+  );
+}

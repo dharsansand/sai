@@ -1,129 +1,190 @@
-import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { HiMenuAlt3, HiX } from 'react-icons/hi';
-import './Navbar.css';
+import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { HiMenuAlt3, HiX } from "react-icons/hi";
+import "./Navbar.css";
 
-const Navbar = () => {
+export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/products', label: 'Products' },
-    { path: '/projects', label: 'Projects' },
-    { path: '/gallery', label: 'Gallery' },
-    { path: '/services', label: 'Services' },
-    { path: '/contact', label: 'Contact' },
+    { path: "/", label: "Home" },
+    { path: "/about", label: "About" },
+    { path: "/products", label: "Products" },
+    { path: "/projects", label: "Projects" },
+    { path: "/gallery", label: "Gallery" },
+    { path: "/services", label: "Services" },
+    { path: "/contact", label: "Contact" },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 30);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    document.body.style.overflow = mobileOpen ? "hidden" : "unset";
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
-  }, [isMobileMenuOpen]);
+  }, [mobileOpen]);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+  const closeMenu = () => setMobileOpen(false);
 
   return (
-    <header className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}>
-      <div className="navbar__container">
-        <NavLink to="/" className="navbar__logo" onClick={closeMobileMenu}>
-          <span className="navbar__logo-text">Temple Crafts</span>
-          <span className="navbar__logo-tagline">Heritage Metal Art</span>
-        </NavLink>
+    <>
+      <header
+        className={`navbar ${isScrolled ? "navbar--scrolled" : ""}`}
+      >
+        <div className="navbar__container">
+          {/* Logo */}
+          <NavLink
+            to="/"
+            className="navbar__logo"
+            onClick={closeMenu}
+          >
+            <div className="navbar__logo-text">
+              Temple Crafts
+            </div>
 
-        <nav className="navbar__nav">
-          <ul className="navbar__links">
-            {navLinks.map((link) => (
-              <li key={link.path} className="navbar__item">
-                <NavLink
-                  to={link.path}
-                  className={({ isActive }) =>
-                    `navbar__link ${isActive ? 'navbar__link--active' : ''}`
-                  }
-                >
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="navbar__actions">
-          <NavLink to="/contact" className="navbar__cta">
-            Get Quote
+            <div className="navbar__logo-tagline">
+              Heritage Metal Art
+            </div>
           </NavLink>
 
-          <button
-            className="navbar__toggle"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <HiX /> : <HiMenuAlt3 />}
-          </button>
-        </div>
-      </div>
+          {/* Desktop Navigation */}
+          <nav className="navbar__nav">
+            <ul className="navbar__links">
+              {navLinks.map((item) => (
+                <li key={item.path}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "navbar__link navbar__link--active"
+                        : "navbar__link"
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
+          {/* Right Actions */}
+          <div className="navbar__actions">
+            <NavLink
+              to="/contact"
+              className="navbar__cta"
+            >
+              Get Quote
+            </NavLink>
+
+            <button
+              className="navbar__toggle"
+              onClick={() => setMobileOpen(true)}
+            >
+              <HiMenuAlt3 />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Menu */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            className="navbar__mobile"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <nav className="navbar__mobile-nav">
+        {mobileOpen && (
+          <>
+            {/* Overlay */}
+
+            <motion.div
+              className="navbar__overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeMenu}
+            />
+
+            {/* Sidebar */}
+
+            <motion.aside
+              className="navbar__mobile"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{
+                duration: 0.35,
+                ease: "easeInOut",
+              }}
+            >
+              <div className="navbar__mobile-header">
+                <div>
+                  <div className="navbar__logo-text">
+                    Temple Crafts
+                  </div>
+
+                  <div className="navbar__logo-tagline">
+                    Heritage Metal Art
+                  </div>
+                </div>
+
+                <button
+                  className="navbar__close"
+                  onClick={closeMenu}
+                >
+                  <HiX />
+                </button>
+              </div>
+
               <ul className="navbar__mobile-links">
-                {navLinks.map((link, index) => (
+                {navLinks.map((item, index) => (
                   <motion.li
-                    key={link.path}
-                    className="navbar__mobile-item"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    key={item.path}
+                    initial={{
+                      opacity: 0,
+                      x: 40,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                    }}
+                    transition={{
+                      delay: index * 0.08,
+                    }}
                   >
                     <NavLink
-                      to={link.path}
+                      to={item.path}
+                      onClick={closeMenu}
                       className={({ isActive }) =>
-                        `navbar__mobile-link ${isActive ? 'navbar__mobile-link--active' : ''}`
+                        isActive
+                          ? "navbar__mobile-link navbar__mobile-link--active"
+                          : "navbar__mobile-link"
                       }
-                      onClick={closeMobileMenu}
                     >
-                      {link.label}
+                      {item.label}
                     </NavLink>
                   </motion.li>
                 ))}
               </ul>
-            </nav>
-          </motion.div>
+
+              <NavLink
+                to="/contact"
+                className="navbar__mobile-btn"
+                onClick={closeMenu}
+              >
+                Get Quote
+              </NavLink>
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
-};
-
-export default Navbar;
+}

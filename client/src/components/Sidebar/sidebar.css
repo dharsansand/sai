@@ -1,27 +1,95 @@
-/* basic styles for the sidebar */
-.sidebar-logo { padding: 18px; text-align: center; color: #fff; }
-.logo-text { margin: 0; font-size: 18px; }
-.logo-mini { margin: 0; font-size: 16px; }
-
-.ps-menu-button, .ps-submenu-button { color: #d1d5db; }
-
-.sidebar-footer { padding: 12px; text-align: center; }
-.sidebar-toggle { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.08); padding: 6px 10px; border-radius: 6px; cursor: pointer; }
-
-/* adjust content spacing when sidebar is present */
-.content-with-sidebar { margin-left: 250px; padding: 20px; }
-
-
-.ps-menu-button {
-    background-color: #1f2937 !important;
-    color: #fff !important;
-}
-.ps-menu-button .active {
-    color: #1f2937 !important;
-    background-color: #fff !important;
-}
-@media (max-width: 900px) {
-  .content-with-sidebar { margin-left: 0; }
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: #0f172a;
+  color: #fff;
+  transition: all .3s ease;
+  z-index: 1000;
 }
 
-.sidebar-footer { padding: 12px; text-align: center; }
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar-header {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  h2{
+    margin: 0px;
+  }
+}
+
+.sidebar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0;
+}
+
+.sidebar-menu li {
+  margin: 10px;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 15px;
+  text-decoration: none;
+  color: white;
+  border-radius: 8px;
+}
+
+.sidebar-menu li.active a {
+  background: white;
+  color: #0f172a;
+}
+
+.collapse-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Overlay */
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s;
+  z-index: 999;
+}
+
+.sidebar-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile */
+
+@media (max-width:768px){
+
+  .sidebar{
+      transform: translateX(-100%);
+      width:100%;
+  }
+
+  .sidebar.mobile-open{
+      transform: translateX(0);
+  }
+  .collapse-btn{
+    display: block;
+  }
+
+}
