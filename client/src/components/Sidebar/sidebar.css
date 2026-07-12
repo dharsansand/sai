@@ -11,6 +11,15 @@
 /* adjust content spacing when sidebar is present */
 .content-with-sidebar { margin-left: 250px; padding: 20px; }
 
+
+.ps-menu-button {
+    background-color: #1f2937 !important;
+    color: #fff !important;
+}
+.ps-menu-button .active {
+    color: #1f2937 !important;
+    background-color: #fff !important;
+}
 @media (max-width: 900px) {
   .content-with-sidebar { margin-left: 0; }
 }

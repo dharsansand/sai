@@ -1,0 +1,131 @@
+/* ==========================================
+   Counter Styles
+   ========================================== */
+
+.counter {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-primary);
+}
+
+.counter__prefix,
+.counter__suffix {
+  font-size: 0.5em;
+  color: var(--color-primary-500);
+}
+
+.counter__number {
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-600);
+  line-height: 1;
+}
+
+/* ==========================================
+   Counter Item
+   ========================================== */
+.counter-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-8);
+  text-align: center;
+}
+
+.counter-item__icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-100) 0%,
+    var(--color-primary-50) 100%
+  );
+  border-radius: var(--radius-full);
+  margin-bottom: var(--spacing-2);
+}
+
+.counter-item__icon {
+  font-size: var(--font-size-3xl);
+  color: var(--color-primary-600);
+}
+
+.counter-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.counter-item__label {
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* ==========================================
+   Grid Container for Counter Items
+   ========================================== */
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-6);
+}
+
+/* ==========================================
+   Dark Variant
+   ========================================== */
+.counter-item--dark {
+  background: transparent;
+}
+
+.counter-item--dark .counter-item__icon-wrapper {
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.counter-item--dark .counter__number {
+  color: var(--color-primary-400);
+}
+
+.counter-item--dark .counter-item__label {
+  color: var(--text-light-secondary);
+}
+
+/* ==========================================
+   Responsive Styles
+   ========================================== */
+@media (min-width: 576px) {
+  .counter-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .counter-item {
+    padding: var(--spacing-10);
+  }
+}
+
+@media (min-width: 768px) {
+  .counter__number {
+    font-size: var(--font-size-6xl);
+  }
+
+  .counter-item__icon-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .counter-item__icon {
+    font-size: var(--font-size-4xl);
+  }
+}
+
+@media (min-width: 992px) {
+  .counter-grid {
+    gap: var(--spacing-10);
+  }
+}

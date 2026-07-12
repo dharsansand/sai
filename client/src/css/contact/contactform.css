@@ -1,0 +1,218 @@
+/* ==========================================
+   Contact Form Styles
+   ========================================== */
+
+.contact-form {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   Grid Layout
+   ========================================== */
+.contact-form__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-5);
+}
+
+/* ==========================================
+   Field
+   ========================================== */
+.contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.contact-form__field--full {
+  grid-column: span 1;
+}
+
+/* ==========================================
+   Label
+   ========================================== */
+.contact-form__label {
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.contact-form__required {
+  color: var(--color-error);
+}
+
+/* ==========================================
+   Input
+   ========================================== */
+.contact-form__input,
+.contact-form__textarea {
+  width: 100%;
+  padding: var(--spacing-4);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border: 2px solid var(--color-neutral-200);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.contact-form__input:focus,
+.contact-form__textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.1);
+}
+
+.contact-form__input::placeholder,
+.contact-form__textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Error State */
+.contact-form__input--error,
+.contact-form__textarea--error {
+  border-color: var(--color-error);
+}
+
+.contact-form__input--error:focus,
+.contact-form__textarea--error:focus {
+  box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1);
+}
+
+/* ==========================================
+   Textarea
+   ========================================== */
+.contact-form__textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* ==========================================
+   Error Message
+   ========================================== */
+.contact-form__error {
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  margin-top: var(--spacing-1);
+}
+
+/* ==========================================
+   Submit Button
+   ========================================== */
+.contact-form__action {
+  margin-top: var(--spacing-4);
+}
+
+.contact-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  width: 100%;
+  padding: var(--spacing-4) var(--spacing-8);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  background: var(--bg-gradient-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-form__submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-lg);
+}
+
+.contact-form__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.contact-form__submit-icon {
+  font-size: var(--font-size-base);
+}
+
+.contact-form__submit-icon--spinning {
+  animation: spin 1s linear infinite;
+}
+
+/* ==========================================
+   Status Messages
+   ========================================== */
+.contact-form__status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-6);
+  padding: var(--spacing-4) var(--spacing-6);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.contact-form__status--success {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+.contact-form__status--error {
+  background: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.contact-form__status-icon {
+  font-size: var(--font-size-lg);
+}
+
+/* ==========================================
+   Dark Variant
+   ========================================== */
+.contact-form--dark .contact-form__label {
+  color: var(--text-light);
+}
+
+.contact-form--dark .contact-form__input,
+.contact-form--dark .contact-form__textarea {
+  background: var(--bg-dark-secondary);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+}
+
+.contact-form--dark .contact-form__input:focus,
+.contact-form--dark .contact-form__textarea:focus {
+  border-color: var(--color-primary-500);
+  background: var(--bg-dark);
+}
+
+.contact-form--dark .contact-form__input::placeholder,
+.contact-form--dark .contact-form__textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* ==========================================
+   Responsive Styles
+   ========================================== */
+@media (min-width: 576px) {
+  .contact-form__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-form__field--full {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 768px) {
+  .contact-form__submit {
+    width: auto;
+  }
+}
