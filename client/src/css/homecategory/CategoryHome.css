@@ -1,0 +1,208 @@
+.rb-cat-section {
+    padding: 100px 0;
+    background-color: #fcfcfc;
+    overflow: hidden;
+}
+
+.rb-cat-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+.rb-cat-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.rb-cat-subtitle {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #6366f1;
+    margin-bottom: 15px;
+}
+
+.rb-cat-main-title {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #111;
+}
+
+.rb-cat-main-title span {
+    color: #6366f1;
+    position: relative;
+}
+
+/* --- GRID SYSTEM: 4 per row, wraps 5th --- */
+.rb-cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+/* --- CARD DESIGN --- */
+.rb-cat-card {
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.rb-cat-card:hover {
+    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+    border-color: #6366f1;
+}
+
+.rb-cat-image-wrapper {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+}
+
+.rb-cat-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+
+.rb-cat-card:hover .rb-cat-img {
+    transform: scale(1.1);
+}
+
+.rb-cat-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 12px;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 50px;
+    color: #111;
+    z-index: 2;
+}
+
+.rb-cat-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(99, 102, 241, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.4s ease;
+}
+
+.rb-cat-card:hover .rb-cat-overlay {
+    opacity: 1;
+}
+
+.rb-cat-btn {
+    background: white;
+    color: #111;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    transform: translateY(20px);
+    transition: 0.4s ease;
+}
+
+.rb-cat-card:hover .rb-cat-btn {
+    transform: translateY(0);
+}
+
+/* --- CONTENT STYLE --- */
+.rb-cat-content {
+    padding: 25px;
+}
+
+.rb-cat-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111;
+    line-height: 1.3;
+    margin-bottom: 12px;
+}
+
+.rb-cat-highlight {
+    color: #6366f1;
+}
+
+.rb-cat-desc {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.rb-cat-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rb-cat-link {
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #111;
+    letter-spacing: 1px;
+}
+
+.rb-cat-dot {
+    width: 6px;
+    height: 6px;
+    background: #6366f1;
+    border-radius: 50%;
+}
+
+/* --- MOBILE & TABLET RESPONSIVENESS --- */
+
+@media (max-width: 1200px) {
+    .rb-cat-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 cards for medium screens */
+    }
+}
+
+@media (max-width: 900px) {
+    .rb-cat-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards for tablets */
+    }
+    .rb-cat-main-title {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .rb-cat-grid {
+        grid-template-columns: 1fr; /* 1 card for mobile */
+        gap: 20px;
+    }
+
+    .rb-cat-section {
+        padding: 60px 0;
+    }
+
+    .rb-cat-image-wrapper {
+        height: 220px;
+    }
+
+    .rb-cat-main-title {
+        font-size: 1.8rem;
+    }
+
+    .rb-cat-card {
+        border-radius: 20px;
+    }
+    
+    /* Disable some animations on mobile for performance */
+    .rb-cat-overlay {
+        display: none; 
+    }
+}

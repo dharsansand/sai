@@ -58,6 +58,14 @@ export default function AppSidebar({
             </Link>
           </li>
 
+             <li className={isActive("/admin/category") ? "active" : ""}>
+            <Link to="/admin/category" onClick={handleMenuClick}>
+              <MdCategory />
+              {(!collapsed || isMobile) && <span>Category</span>}
+            </Link>
+          </li>
+
+
           <li className={isActive("/admin/user") ? "active" : ""}>
             <Link to="/admin/user" onClick={handleMenuClick}>
               <MdCategory />

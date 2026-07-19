@@ -14,9 +14,9 @@ import Checkinputbox from "../../components/common/checkbox";
 import { Button, Popconfirm } from "antd";
 import Upload from "../../components/common/upload";
 import { ToastSuccess } from "../../components/common/toast";
-import BrannervalidationSchema from "./brannervalidation";
+// import BrannervalidationSchema from "./brannervalidation";
 import "../../Admin/common.css";
-const Branner = () => {
+const Category = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
 
@@ -24,7 +24,7 @@ const Branner = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await getData("banner");
+      const res = await getData("category");
       console.log("res", res);
       setData(Array.isArray(res.data?.data) ? res.data?.data : []);
     } catch (error) {
@@ -44,21 +44,21 @@ const Branner = () => {
 
   const handleSubmit = async (values, actions) => {
     try {
+        console.log("values",values)
       const payload = {
         title: values.title,
-        subTitle: values.subTitle,
+
         content: values.content,
         Active: values.Active,
-        banner: values.banner,
-        highlight: values.highlight,
+         img: values.img,
       };
 
       if (editData) {
-        await postOneData("banner", payload, editData._id);
-        ToastSuccess("Banner Updated Successfully");
+        await postOneData("category", payload, editData._id);
+        ToastSuccess("category Updated Successfully");
       } else {
-        await postData("banner", payload);
-        ToastSuccess("Banner Added Successfully");
+        await postData("category", payload);
+        ToastSuccess("category Added Successfully");
       }
 
       fetchUsers();
@@ -79,17 +79,17 @@ const Branner = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteData("banner", id);
+      await deleteData("category", id);
       setData((prev) => prev.filter((item) => item._id !== id));
-      ToastSuccess("Banner deleted successfully");
+      ToastSuccess("category deleted successfully");
     } catch (error) {
       console.error("Delete failed", error);
     }
   };
   const toggleActive = async (record) => {
     try {
-      await postOneData("banner", { Active: !record.Active }, record._id);
-      ToastSuccess("Banner updated successfully");
+      await postOneData("category", { Active: !record.Active }, record._id);
+      ToastSuccess("category updated successfully");
       fetchUsers();
     } catch (err) {
       console.error("Active toggle failed", err);
@@ -98,7 +98,7 @@ const Branner = () => {
 
   const columns = [
     { title: "Title", dataIndex: "title" },
-    { title: "subTitle", dataIndex: "subTitle" },
+   
     {
       title: "Active",
       render: (_, record) => (
@@ -138,7 +138,7 @@ const Branner = () => {
           
           
           "
-          text="Add Banner"
+          text="Add Category"
           setOpen={() => {
             setEditData(null);
             setOpen(true);
@@ -150,15 +150,14 @@ const Branner = () => {
         enableReinitialize
         initialValues={{
           title: editData?.title || "",
-          subTitle: editData?.subTitle || "",
+
           content: editData?.content || "",
-          banner: editData?.banner || [{ img: "" }],
+            img: editData?.img || [""], 
           Active: editData?.Active ?? true,
-          highlight: editData?.highlight || "",
 
           isEdit: !!editData,
         }}
-        validationSchema={BrannervalidationSchema}
+        // validationSchema={BrannervalidationSchema}
         onSubmit={handleSubmit}
       >
         {(formik) => (
@@ -180,23 +179,7 @@ const Branner = () => {
 
               <div className="mb-3">
                 <Text
-                  text="SubTitle"
-                  name="subTitle"
-                  placeholder="Enter subTitle"
-                  required={true}
-                />
-                <div className="mb-3">
-                  <Text
-                    text="Highlight"
-                    name="highlight"
-                    placeholder="Enter highlight"
-                    // required={true}
-                  />
-                </div>
-              </div>
-              <div className="mb-3">
-                <Text
-                  text="content"
+                  text="Content"
                   name="content"
                   placeholder="Enter content"
                   required={true}
@@ -204,15 +187,17 @@ const Branner = () => {
               </div>
 
               <div className="mb-3">
-                {formik.values.banner?.map((item, index) => (
-                  <Upload
-                    formik={formik}
-                    name={`banner.${index}.img`}
-                    limit={1}
-                    existingImages={item.img}
-                    pdfimagepathname="banner"
-                    settingname="banner"
-                  />
+               {formik.values.img?.map((url, index) => (
+                  <div key={index} style={{ marginBottom: '10px' }}>
+                    <Upload
+                      formik={formik}
+                      name={`img[${index}]`} 
+                      limit={1}
+                      existingImages={url} 
+                      pdfimagepathname="category"
+                      settingname="category"
+                    />
+                  </div>
                 ))}
               </div>
 
@@ -230,4 +215,4 @@ const Branner = () => {
     </>
   );
 };
-export default Branner;
+export default Category;
