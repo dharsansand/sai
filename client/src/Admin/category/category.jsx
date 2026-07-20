@@ -16,6 +16,7 @@ import Upload from "../../components/common/upload";
 import { ToastSuccess } from "../../components/common/toast";
 // import BrannervalidationSchema from "./brannervalidation";
 import "../../Admin/common.css";
+import categoryvalidationSchema from "./categoryValidation";
 const Category = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
@@ -47,7 +48,9 @@ const Category = () => {
         console.log("values",values)
       const payload = {
         title: values.title,
+        subTitle: values.subTitle,
 
+highlight:values.highlight,
         content: values.content,
         Active: values.Active,
          img: values.img,
@@ -150,6 +153,9 @@ const Category = () => {
         enableReinitialize
         initialValues={{
           title: editData?.title || "",
+          subTitle: editData?.subTitle || "",
+
+          highlight:editData?.highlight || "",
 
           content: editData?.content || "",
             img: editData?.img || [""], 
@@ -157,7 +163,7 @@ const Category = () => {
 
           isEdit: !!editData,
         }}
-        // validationSchema={BrannervalidationSchema}
+        validationSchema={categoryvalidationSchema}
         onSubmit={handleSubmit}
       >
         {(formik) => (
@@ -173,6 +179,24 @@ const Category = () => {
                   text="Title"
                   name="title"
                   placeholder="Enter title"
+                  required={true}
+                />
+              </div>
+
+               <div className="mb-3">
+                <Text
+                  text="SubTitle"
+                  name="subTitle"
+                  placeholder="Enter subTitle"
+                  required={true}
+                />
+                </div>
+
+              <div className="mb-3">
+                <Text
+                  text="highlight"
+                  name="highlight"
+                  placeholder="Enter content"
                   required={true}
                 />
               </div>

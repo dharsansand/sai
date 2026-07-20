@@ -1,4 +1,4 @@
-import { categoryImageUpload } from "../controllers/category_controller.js";
+import { categoryImageUpload, homecategory } from "../controllers/category_controller.js";
 import { create, deleteOne, getAll, updateById } from "../controllers/common_controllers.js";
 import createCloudinaryMiddleware from "../controllers/upload.js";
 import category from "../models/category.js"
@@ -9,6 +9,7 @@ import express from "express";
 
 const router = express.Router();
 
+router.get("/home",homecategory)
 
 router.get("/",(req,res)=>getAll(req,res,category));
 
