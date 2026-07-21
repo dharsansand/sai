@@ -39,7 +39,7 @@ const Banner = () => {
     const fetchBanner = async () => {
       try {
         const response = await getData("banner/home");
-        // Check if response is the array directly or contains a .data property
+    
         const data = response?.data || response;
         setBannerData(data);
       } catch (error) {

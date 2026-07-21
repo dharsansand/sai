@@ -6,11 +6,11 @@ export const bannerImageUpload = async (req, res) => {
       return res.status(400).json({ message: "No File Uploaded" });
     }
 
-    // req.file.path is the actual HTTPS URL from Cloudinary
+   
     return res.status(200).json({ 
       message: "File Upload successfully", 
       file: {
-        filename: req.file.path // Returning the full URL string
+        filename: req.file.path 
       } 
     });
   } catch (error) {
@@ -23,13 +23,13 @@ export const bannerImageUpload = async (req, res) => {
 export const homeBranner = async (req, res) => {
   try {
   
-    const banners = await banner.find({ Active: true }).sort({ createdAt: -1 });
+    const banners = await banner.find({ Active: true,isdelete:false }).sort({ createdAt: -1 });
 
  
     res.status(200).json(banners);
     
   } catch (error) {
-    // Handle potential errors
+
     res.status(500).json({ 
         message: "Error fetching banner data", 
         error: error.message 
