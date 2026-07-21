@@ -7,6 +7,7 @@ import ProtectedPage from "./common/ProtectedRoute";
 import Dashboard from "./Admin/dashbord";
 import User from "./Admin/user/user";
 import Branner from "./Admin/banner/branner";
+import Category from "./Admin/category/category";
 
 const App = () => {
   return (
@@ -14,14 +15,13 @@ const App = () => {
       {/* LOGIN */}
       <Route path="login" element={<AdminLoginForm />} />
 
-   
       <Route element={<ProtectedPage />}>
         <Route element={<Layout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="user" element={<User />} />
           <Route path="branner" element={<Branner />} />
-          
+          <Route path="category" element={<Category />} />
         </Route>
       </Route>
 

@@ -11,6 +11,7 @@ import fs from 'fs';
 
 import userRoutes from "./routes/user.js";
 import brannerRoutes from "./routes/branner.js";
+import category from "./routes/category.js"
 dotenv.config();
 const app = express();
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
@@ -43,21 +44,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadsPath = path.join(process.cwd(), "uploads");
 
-console.log("STATIC PATH:", uploadsPath);
-
-// Verify if the folder actually exists on the server
-if (fs.existsSync(uploadsPath)) {
-    console.log("✅ Uploads folder exists");
-    // Check if banner subfolder exists
-    if (fs.existsSync(path.join(uploadsPath, "banner"))) {
-        console.log("✅ Banner folder exists. Files inside:", fs.readdirSync(path.join(uploadsPath, "banner")));
-    } else {
-        console.log("❌ Banner subfolder MISSING inside uploads");
-    }
-} else {
-    console.log("❌ Uploads folder NOT FOUND at " + uploadsPath);
-}
-
 app.use("/api/static", express.static(uploadsPath));
 app.use(express.json());
 
@@ -70,6 +56,7 @@ mongoose
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/banner", brannerRoutes);
+app.use("/api/category",category);
 
 // Start server
 const PORT = process.env.PORT || 5000;

@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Views/Home";
 import Header from "./components/common/Header";
+import Footer from "./components/common/Footer";
 
 
 
@@ -14,6 +15,7 @@ const View = () => {
 
 
     </Routes>
+    <Footer/>
     </>
   );
 };
