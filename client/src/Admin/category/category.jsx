@@ -49,6 +49,8 @@ const Category = () => {
       const payload = {
         title: values.title,
         subTitle: values.subTitle,
+        slug: values.slug,
+
 
 highlight:values.highlight,
         content: values.content,
@@ -156,6 +158,8 @@ highlight:values.highlight,
           subTitle: editData?.subTitle || "",
 
           highlight:editData?.highlight || "",
+          slug:editData?.slug || "",
+
 
           content: editData?.content || "",
             img: editData?.img || [""], 
@@ -188,6 +192,14 @@ highlight:values.highlight,
                   text="SubTitle"
                   name="subTitle"
                   placeholder="Enter subTitle"
+                  required={true}
+                />
+                </div>
+                 <div className="mb-3">
+                <Text
+                  text="Slug"
+                  name="slug"
+                  placeholder="Enter Slug"
                   required={true}
                 />
                 </div>

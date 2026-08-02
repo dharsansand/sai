@@ -101,11 +101,11 @@ export default function CategoryHome() {
 
               return (
                 <motion.div
-                  key={item._id}
+                  key={item.slug}
                   className="rb-cat-card"
                   variants={cardVariants}
                   whileHover={{ y: -10 }}
-                  onClick={() => navigate(`/product/${item._id}`)}
+                  onClick={() => navigate(`/product/${item.slug}`)}
                 >
                   <div className="rb-cat-image-wrapper">
                     <img
