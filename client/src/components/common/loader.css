@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&family=Inter:wght@700&display=swap");
+
+:root {
+  --gold-pri: #d4af37;
+  --gold-sec: #8a611f;
+}
+
+.tc_loader_wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.tc_loader_core {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tc_ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: tc_ringSpin 8s linear infinite;
+}
+
+.tc_ring_tick {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 12px;
+  margin-top: -75px;
+  margin-left: -4px;
+  transform-origin: 4px 75px;
+  background: var(--gold-pri);
+  opacity: 0.3;
+  border-radius: 2px;
+}
+
+@keyframes tc_ringSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.tc_icon {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(0px 0px 12px rgba(212, 175, 55, 0.4));
+}
+
+.tc_part {
+  fill: url(#tc_gold_grad);
+  opacity: 0;
+}
+
+/* Fly-in Animations */
+.tc_p_top { animation: tc_flyDown 3s ease-in-out infinite; animation-delay: 0.1s; }
+.tc_p_roof { animation: tc_flyDown 3s ease-in-out infinite; animation-delay: 0.2s; }
+.tc_p_pillar_l { animation: tc_flySideL 3s ease-in-out infinite; animation-delay: 0.3s; }
+.tc_p_pillar_r { animation: tc_flySideR 3s ease-in-out infinite; animation-delay: 0.3s; }
+.tc_p_base { animation: tc_flyUp 3s ease-in-out infinite; animation-delay: 0.4s; }
+
+@keyframes tc_flyDown {
+  0%, 100% { opacity: 0; transform: translateY(-30px); }
+  20%, 80% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tc_flyUp {
+  0%, 100% { opacity: 0; transform: translateY(30px); }
+  20%, 80% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tc_flySideL {
+  0%, 100% { opacity: 0; transform: translateX(-30px); }
+  20%, 80% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes tc_flySideR {
+  0%, 100% { opacity: 0; transform: translateX(30px); }
+  20%, 80% { opacity: 1; transform: translateX(0); }
+}
+
+/* Brand Name Style */
+.tc_brand_reveal {
+  text-align: center;
+}
+
+.tc_brand_name {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 800;
+  font-size: 36px;
+  letter-spacing: 8px;
+  background: linear-gradient(90deg, #8a611f 0%, #e6bd6f 30%, #f3d693 50%, #e6bd6f 70%, #8a611f 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: tc_shine 3s linear infinite;
+}
+
+.tc_brand_sub {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 6px;
+  color: #cfa15a;
+}
+
+@keyframes tc_shine {
+  to { background-position: 200% center; }
+}

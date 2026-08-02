@@ -6,21 +6,43 @@ import { getData } from '../Api/apiRequest';
 
 export default function CategoryHome() {
   const navigate = useNavigate();
+
   const [CategoryData, setCategoryData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategory = async () => {
       try {
         const response = await getData("category/home?limit=4");
-       
         const data = response?.data || response;
         setCategoryData(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching category data:", error);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchCategory();
   }, []);
+
+  const SkeletonCard = () => (
+    <div className="rb-cat-card skeleton">
+      <div className="rb-cat-image-wrapper">
+        <div className="rb-skeleton-shimmer sk-img"></div>
+      </div>
+
+      <div className="rb-cat-content">
+        <div className="rb-skeleton-shimmer sk-title"></div>
+        <div className="rb-skeleton-shimmer sk-desc"></div>
+        <div
+          className="rb-skeleton-shimmer sk-desc"
+          style={{ width: "80%" }}
+        ></div>
+        <div className="rb-skeleton-shimmer sk-footer"></div>
+      </div>
+    </div>
+  );
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -32,10 +54,13 @@ export default function CategoryHome() {
 
   const cardVariants = {
     hidden: { y: 40, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1, 
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } 
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1]
+      }
     }
   };
 
@@ -43,63 +68,83 @@ export default function CategoryHome() {
     <section className="rb-cat-section">
       <div className="rb-cat-container">
         <div className="rb-cat-header">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, letterSpacing: "2px" }}
             whileInView={{ opacity: 1, letterSpacing: "5px" }}
             className="rb-cat-subtitle"
           >
             OUR COLLECTIONS
           </motion.span>
-          <h2 className="rb-cat-main-title">Handcrafted <span>Heritage</span></h2>
+
+          <h2 className="rb-cat-main-title">
+            Handcrafted <span>Heritage</span>
+          </h2>
         </div>
 
-        <motion.div 
+        <motion.div
           className="rb-cat-grid"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-          {CategoryData.map((item) => {
-            
-            const imageSource = item.img && item.img[0] 
-              ? (typeof item.img[0] === 'object' ? item.img[0].img : item.img[0])
-              : ""
-            return (
-              <motion.div 
-                key={item._id} 
-                className="rb-cat-card"
-                variants={cardVariants}
-                whileHover={{ y: -10 }}
-                onClick={() => navigate(`/product/${item._id}`)}
-              >
-                <div className="rb-cat-image-wrapper">
-                  <img 
-                    src={imageSource} 
-                    alt={item.title} 
-                    className="rb-cat-img" 
-                    onError={(e) => { e.target.src = "https://via.placeholder.com/400" }} 
-                  />
-                  {/* Note: JSON uses 'subTitle' with capital T */}
-                  <div className="rb-cat-badge">{item.subTitle || "New"}</div>
-                  <div className="rb-cat-overlay">
-                    <div className="rb-cat-btn">View Details</div>
-                  </div>
-                </div>
+          {loading ? (
+            [...Array(4)].map((_, index) => <SkeletonCard key={index} />)
+          ) : (
+            CategoryData.map((item) => {
+              const imageSource =
+                item.img && item.img[0]
+                  ? typeof item.img[0] === "object"
+                    ? item.img[0].img
+                    : item.img[0]
+                  : "";
 
-                <div className="rb-cat-content">
-                  <h3 className="rb-cat-title">
-                    {item.title} <span className="rb-cat-highlight">{item.highlight}</span>
-                  </h3>
-                  <p className="rb-cat-desc">{item.content}</p>
-                  <div className="rb-cat-footer">
-                    <span className="rb-cat-link">Explore Now</span>
-                    <div className="rb-cat-dot"></div>
+              return (
+                <motion.div
+                  key={item._id}
+                  className="rb-cat-card"
+                  variants={cardVariants}
+                  whileHover={{ y: -10 }}
+                  onClick={() => navigate(`/product/${item._id}`)}
+                >
+                  <div className="rb-cat-image-wrapper">
+                    <img
+                      src={imageSource}
+                      alt={item.title}
+                      className="rb-cat-img"
+                     
+                    />
+
+                    <div className="rb-cat-badge">
+                      {item.subTitle || "New"}
+                    </div>
+
+                    <div className="rb-cat-overlay">
+                      <div className="rb-cat-btn">View Details</div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
+
+                  <div className="rb-cat-content">
+                    <h3 className="rb-cat-title">
+                      {item.title}
+                      <span className="rb-cat-highlight">
+                        {item.highlight}
+                      </span>
+                    </h3>
+
+                    <p className="rb-cat-desc">{item.content}</p>
+
+                    <div className="rb-cat-footer">
+                      <span className="rb-cat-link">
+                        Explore Now
+                      </span>
+                      <div className="rb-cat-dot"></div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })
+          )}
         </motion.div>
       </div>
     </section>
