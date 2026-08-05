@@ -1,0 +1,207 @@
+/* Sidebar Styling */
+.category-container {
+    position: sticky;
+    top: 20px;
+}
+
+.category-list-group {
+    border: none !important;
+}
+
+.category-item {
+    cursor: pointer;
+    border-radius: 8px !important;
+    margin-bottom: 8px;
+    border: 1px solid #eee !important;
+    transition: all 0.2s ease;
+}
+/* Perspective for 3D Tilt */
+.products-container {
+    perspective: 1000px;
+}
+
+/* Category Sidebar Styling */
+.category-box {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid #eee;
+    position: sticky;
+    top: 20px;
+}
+
+.cat-btn {
+    border: none !important;
+    margin-bottom: 10px;
+    border-radius: 10px !important;
+    text-align: left;
+    transition: 0.3s !important;
+}
+
+/* Mobile Category Scroll */
+@media (max-width: 767px) {
+    .category-box {
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+        margin-bottom: 20px;
+        white-space: nowrap;
+    }
+}
+
+/* The Card Wrapper */
+.tilted-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.card-img-container {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #333;
+    z-index: 2;
+}
+
+.read-more-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.2s;
+}
+
+.read-more-link:hover {
+    gap: 10px;
+}
+/* Offset for Fixed Header */
+.products-page-wrapper {
+    padding-top: 120px; /* Adjust this based on your Navbar height */
+    padding-bottom: 80px;
+    background-color: #fcfcfc; /* Light elegant background */
+    min-height: 100vh;
+}
+
+/* Category Sidebar Styling */
+.category-sidebar-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 120px; /* Sticks when scrolling */
+    border: 1px solid #eee;
+}
+
+.category-title {
+    font-family: 'Playfair Display', serif; /* Or your logo font */
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.category-item-btn {
+    width: 100%;
+    text-align: left;
+    padding: 12px 18px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Match your "Get Quote" button color */
+.category-item-btn.active {
+    background-color: #d4af37 !important; /* Gold/Yellow color from your logo */
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.category-item-btn:hover:not(.active) {
+    background-color: #f8f9fa;
+    padding-left: 25px;
+}
+
+/* Product Card Styling */
+.product-main-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .products-page-wrapper {
+        padding-top: 100px;
+    }
+    .category-sidebar-card {
+        position: relative;
+        top: 0;
+        margin-bottom: 30px;
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+        gap: 10px;
+    }
+    .category-item-btn {
+        white-space: nowrap;
+        margin-bottom: 0;
+        padding: 8px 15px;
+    }
+    .category-title {
+        display: none; /* Hide title on mobile horizontal scroll */
+    }
+}
+/* Mobile responsive categories */
+@media (max-width: 767px) {
+    .category-list-group {
+        display: flex !important;
+        flex-direction: row !important;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 10px;
+    }
+    .category-item {
+        white-space: nowrap;
+        margin-bottom: 0;
+    }
+}
+
+.product-grid-container {
+    min-height: 500px;
+}

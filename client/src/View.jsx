@@ -4,6 +4,7 @@ import Home from "./Views/Home";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import Loader from "./components/common/Loader";
+import Products from "./Views/products";
 
 
 
@@ -28,6 +29,7 @@ const View = () => {
     <Header />
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/products" element={<Products />} />
 
 
     </Routes>

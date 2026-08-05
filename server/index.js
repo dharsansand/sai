@@ -12,6 +12,7 @@ import fs from 'fs';
 import userRoutes from "./routes/user.js";
 import brannerRoutes from "./routes/branner.js";
 import category from "./routes/category.js"
+import Product from "./routes/product.js"
 import allrunapi from "./routes/allrunapi.js"
 dotenv.config();
 const app = express();
@@ -58,6 +59,8 @@ mongoose
 app.use("/api/users", userRoutes);
 app.use("/api/banner", brannerRoutes);
 app.use("/api/category",category);
+app.use("/api/product",Product)
+
 app.use("/api/alltimeapi",allrunapi)
 
 // Start server
