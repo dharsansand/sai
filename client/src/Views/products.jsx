@@ -1,63 +1,65 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useParams } from "react-router-dom";
 
 import "../css/product/products.css";
 import ProductsCard from "./productcard";
 import ProductCategory from "./productcategory";
-
-const PRODUCTS_DATA = [
-  {
-    id: 1,
-    name: "Noise Cancelling Headphones",
-    category: "Electronics",
-    price: "$299",
-    description: "Experience pure sound with our flagship wireless headphones featuring industry-leading noise cancellation.",
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format"
-  },
-  {
-    id: 2,
-    name: "Minimalist Leather Watch",
-    category: "Lifestyle",
-    price: "$150",
-    description: "A sleek, timeless design for the modern professional. Genuine Italian leather strap included.",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format"
-  },
-  {
-    id: 3,
-    name: "Urban Explorer Backpack",
-    category: "Fashion",
-    price: "$85",
-    description: "Water-resistant, durable, and stylish. The perfect companion for your daily city adventures.",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format"
-  }
-];
+import { getData } from "../Api/apiRequest";
 
 export default function Products() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [productsData, setProductsData] = useState([]);
+  const { id } = useParams(); // This is the slug from the URL
 
-  const filtered = activeCategory === "All" 
-    ? PRODUCTS_DATA 
-    : PRODUCTS_DATA.filter(p => p.category === activeCategory);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const url = id ? `product?category=${id}` : "product";
+        const response = await getData(url);
+        const data = response?.data?.data || response?.data || response;
+        setProductsData(Array.isArray(data) ? data : []);
+        
+        // If we have an ID in URL but activeCategory is "All", 
+        // you might want to find the category name to update the label.
+        // For now, let's keep it simple.
+      } catch (error) {
+        setProductsData([]);
+      }
+    };
+    fetchProducts();
+  }, [id]);
 
   return (
     <div className="products-page-wrapper">
       <Container>
-        <Row className="justify-content-center">
-          {/* LEFT SIDE: Category */}
-          <Col lg={3} md={4} xs={12}>
+        <Row>
+          <Col lg={3} md={4} xs={12} className="category-column">
             <ProductCategory active={activeCategory} onSelect={setActiveCategory} />
           </Col>
 
-          {/* RIGHT SIDE: Products */}
           <Col lg={9} md={8} xs={12}>
             <Row className="g-4">
-              <AnimatePresence mode="wait">
-                {filtered.map((item) => (
-                  <Col key={item.id} lg={4} md={6} sm={6}>
-                    <ProductsCard product={item} />
+              <AnimatePresence mode="popLayout">
+                {productsData.length > 0 ? (
+                  productsData.map((item) => (
+                    <Col key={item._id} lg={4} md={6} sm={6} xs={12}>
+                      <motion.div
+                        layout
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                      >
+                        <ProductsCard product={item} />
+                      </motion.div>
+                    </Col>
+                  ))
+                ) : (
+                  <Col xs={12} className="text-center p-5">
+                    <p>No products found.</p>
                   </Col>
-                ))}
+                )}
               </AnimatePresence>
             </Row>
           </Col>

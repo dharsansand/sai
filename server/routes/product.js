@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/home",homecategory)
 
-router.get("/",(req,res)=>getAll(req,res,product));
+router.get("/",(req,res)=>getAll(req,res,product,"category"));
 
 router.post("/",(req,res)=>create(req , res,product));
 router.put("/:id",(req,res)=>updateById(req,res,product));

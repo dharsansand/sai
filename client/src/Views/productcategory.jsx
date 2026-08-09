@@ -1,22 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { getData } from "../Api/apiRequest";
 
 export default function ProductCategory({ active, onSelect }) {
-  const categories = ["All", "Electronics", "Fashion", "Lifestyle"];
+  const [apiCategories, setApiCategories] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await getData("category");
+        const data = response?.data || response;
+        if (Array.isArray(data)) setApiCategories(data);
+        else if (data?.data) setApiCategories(data.data);
+      } catch (error) { console.error(error); }
+    };
+    fetchCategory();
+  }, []);
+
+  const handleCategoryClick = (cat) => {
+    if (cat === "All") {
+      onSelect("All");
+      navigate("/products");
+    } else {
+      onSelect(cat.title);
+      navigate(`/products/${cat.slug}`);
+    }
+  };
 
   return (
     <div className="category-sidebar-card">
       <h3 className="category-title">Collections</h3>
-      <div className="category-list">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => onSelect(cat)}
-            className={`category-item-btn ${active === cat ? "active" : ""}`}
-          >
-            {cat}
-          </button>
-        ))}
+      
+      <div className="mobile-category-header">
+        <div className="mobile-active-label">
+          <small>COLLECTION</small>
+          <span>{active}</span>
+        </div>
+
+        <div className="category-list-wrapper">
+          <div className="category-list-scroll">
+            {/* All Button */}
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleCategoryClick("All")}
+              className={`category-item-btn ${active === "All" ? "active" : ""}`}
+            >
+              All
+            </motion.button>
+
+            {/* Dynamic Buttons */}
+            {apiCategories.map((cat) => (
+              <motion.button
+                key={cat._id}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleCategoryClick(cat)}
+                className={`category-item-btn ${active === cat.title ? "active" : ""}`}
+              >
+                {cat.title}
+              </motion.button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
