@@ -67,6 +67,8 @@ export const productAllData = async (req, res) => {
 
   
     if (req?.query?.category) {
+
+      const categoryquery = req?.query?.category
     
      
       const categoryfind = await category.findOne({
@@ -93,7 +95,7 @@ export const productAllData = async (req, res) => {
         .sort({ createdAt: -1 })
         .populate("category");
 
-      console.log("productData:", productData);
+      
 
       return res.status(200).json({
         success: true,
