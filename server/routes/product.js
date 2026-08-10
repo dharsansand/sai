@@ -1,6 +1,6 @@
 import { categoryImageUpload, homecategory } from "../controllers/category_controller.js";
 import { create, deleteOne, getAll, updateById } from "../controllers/common_controllers.js";
-import { productImageUpload } from "../controllers/product_controller.js";
+import { productImageUpload,productGetOneData,productAllData} from "../controllers/product_controller.js";
 import createCloudinaryMiddleware from "../controllers/upload.js";
 import product from "../models/product.js"
 
@@ -12,7 +12,8 @@ const router = express.Router();
 
 router.get("/home",homecategory)
 
-router.get("/",(req,res)=>getAll(req,res,product,"category"));
+router.get("/",(req,res)=>productAllData(req , res));
+router.get("/:id",(req,res)=>productGetOneData( req , res,));
 
 router.post("/",(req,res)=>create(req , res,product));
 router.put("/:id",(req,res)=>updateById(req,res,product));
