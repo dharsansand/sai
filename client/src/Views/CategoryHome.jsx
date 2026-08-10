@@ -105,7 +105,7 @@ export default function CategoryHome() {
                   className="rb-cat-card"
                   variants={cardVariants}
                   whileHover={{ y: -10 }}
-                  onClick={() => navigate(`/product/${item.slug}`)}
+                  onClick={() => navigate(`/products/${item.slug}`)}
                 >
                   <div className="rb-cat-image-wrapper">
                     <img
