@@ -5,7 +5,7 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import Loader from "./components/common/Loader";
 import Products from "./Views/products";
-import ProductDetails from "./Views/productdetails";
+import ProductDetails from "./Views/ProductDetails";
 
 const View = () => {
   const [isLoading, setIsLoading] = useState(true);
