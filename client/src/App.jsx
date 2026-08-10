@@ -8,12 +8,13 @@ import Dashboard from "./Admin/dashbord";
 import User from "./Admin/user/user";
 import Branner from "./Admin/banner/branner";
 import Category from "./Admin/category/category";
+import Product from "./Admin/products/product";
 
 const App = () => {
   return (
     <Routes>
       {/* LOGIN */}
-      <Route path="login" element={<AdminLoginForm />} />
+      <Route path="login" element={<AdminLoginForm />}  />
 
       <Route element={<ProtectedPage />}>
         <Route element={<Layout />}>
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="user" element={<User />} />
           <Route path="branner" element={<Branner />} />
           <Route path="category" element={<Category />} />
+          <Route path="product" element={<Product />} />
         </Route>
       </Route>
 

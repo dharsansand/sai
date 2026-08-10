@@ -137,7 +137,7 @@
     }
 
     .rb-about-grid {
-        grid-template-columns: 1fr; /* Stacks everything */
+        grid-template-columns: 1fr; 
         gap: 50px;
         text-align: center;
     }

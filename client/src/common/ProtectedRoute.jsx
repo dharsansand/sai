@@ -13,9 +13,19 @@ const ProtectedPage = () => {
       if (!token) return navigate("/admin/login", { replace: true });
 
       try {
-        const response = await getData("users/me"); // getData must send Authorization header
-        setAdminCurrentUser(response.data); // backend returns user directly
+        const response = await getData("users/me"); 
+        console.log("response",response)
+        setAdminCurrentUser(response.data); 
+
+        if(response?.status === 401){
+             localStorage.removeItem("token");
+        localStorage.removeItem("tokenExpiry");
+        localStorage.removeItem("currentUser")
+        navigate("/admin/login", { replace: true });
+
+        }
       } catch (err) {
+        
         localStorage.removeItem("token");
         localStorage.removeItem("tokenExpiry");
         navigate("/admin/login", { replace: true });

@@ -4,6 +4,7 @@ const categorySchema = new mongoose.Schema({
     subTitle : { type: String },
     
     highlight:{type:String},
+    slug:{type:String},
     content :{ type: String },
     img :{type:Array,required:true},
     Active: { type: Boolean, default: false  },

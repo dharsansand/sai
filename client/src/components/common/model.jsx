@@ -7,6 +7,7 @@ const OpenModel = ({ open, setOpen, children, formik, handleCancel }) => {
       open={open}
       centered
       onCancel={() => handleCancel(formik, setOpen)}
+      width={750}
       destroyOnClose
     >
       {children}
