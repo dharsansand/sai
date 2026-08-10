@@ -15,7 +15,7 @@
     "bootstrap": "^5.3.8",
     "formik": "^2.4.6",
     "framer-motion": "^12.43.0",
-    "jodit-react": "^5.3.21",
+    "jodit-react": "^5.4.70",
     "jwt-decode": "^4.0.0",
     "ogl": "^1.0.11",
     "react": "^18.3.1",

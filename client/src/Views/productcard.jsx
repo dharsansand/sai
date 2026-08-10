@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Card } from "react-bootstrap";
-import { Link } from "react-router-dom"; // Use Link for faster internal navigation
+import { Link } from "react-router-dom";
 
 export default function ProductsCard({ product }) {
 
@@ -16,14 +16,12 @@ export default function ProductsCard({ product }) {
       transition={{ duration: 0.4 }}
     >
       <Card className="product-main-card h-100 shadow-sm border-0">
-        {/* Image Section */}
         <div className="card-img-container" style={{ height: "220px", overflow: "hidden", position: "relative" }}>
           <Card.Img 
             variant="top" 
             src={imageUrl} 
             style={{ objectFit: "cover", height: "100%", width: "100%" }}
           />
-          {/* Using 'highlight' from your JSON (e.g., "Up to 40% off") */}
           {product.highlight && (
             <div className="category-badge" style={{
                 position: 'absolute',
@@ -42,7 +40,6 @@ export default function ProductsCard({ product }) {
         </div>
 
         <Card.Body className="d-flex flex-column">
-         
           <small className="text-muted text-uppercase mb-1" style={{ fontSize: '0.7rem', letterSpacing: '1px' }}>
             {product.category?.title || "Collection"}
           </small>
@@ -52,20 +49,20 @@ export default function ProductsCard({ product }) {
           </Card.Title>
 
           <Card.Text className="text-muted small mb-3">
-            {/* Safe substring check */}
             {product.content?.length > 70 
               ? `${product.content.substring(0, 70)}...` 
               : product.content || "No description available"}
           </Card.Text>
 
           <div className="mt-auto d-flex justify-content-between align-items-center">
-          
             <span className="fw-bold" style={{ color: '#333', fontSize: '0.9rem' }}>
-              
             </span>
             
+            {/* KEY CHANGE: pass the full product object via `state` so
+               ProductDetails can render instantly without waiting on a fetch */}
             <Link 
                 to={`/productDetails/${product.slug}`} 
+                state={{ product }}
                 className="text-decoration-none fw-bold" 
                 style={{ color: '#d4af37', fontSize: '0.85rem' }}
             >
