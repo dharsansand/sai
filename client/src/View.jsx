@@ -4,7 +4,7 @@ import Home from "./Views/Home";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import Loader from "./components/common/Loader";
-
+import Contact from "./Views/Contact"
 
 
 const View = () => {
@@ -28,6 +28,7 @@ const View = () => {
     <Header />
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/contact" element={<Contact />} />
 
 
     </Routes>
