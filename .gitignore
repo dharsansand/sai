@@ -1,4 +1,4 @@
-node_modules/
+
 .env
 .env.local
 .env.production
@@ -6,4 +6,4 @@ dist/
 build/
 .cache/
 # server/uploads
-
+server/node_modules/

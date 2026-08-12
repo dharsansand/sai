@@ -1,19 +1,29 @@
 import { useState } from 'react';
+import axios from 'axios'; 
 import '../css/contact/counter/contact.css';
+import { postData } from '../Api/apiRequest';
 
-const initialValues = { name: '', email: '', subject: '', message: '' };
+// Added 'phone' to initial values
+const initialValues = { name: '', email: '', phone: '', subject: '', message: '' };
 
 export default function Contact() {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [serverError, setServerError] = useState(''); 
 
   const validateField = (name, value) => {
     if (name === 'email') {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
         ? ''
         : 'Please enter a valid email.';
+    }
+    // Simple phone validation (checks for numbers, spaces, and + symbol)
+    if (name === 'phone') {
+      return /^[0-9+\s-]{8,15}$/.test(value.trim())
+        ? ''
+        : 'Please enter a valid phone number.';
     }
     return value.trim().length > 0
       ? ''
@@ -28,8 +38,9 @@ export default function Contact() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setServerError(''); 
 
     const newErrors = {};
     Object.keys(values).forEach((key) => {
@@ -42,25 +53,20 @@ export default function Contact() {
 
     setSubmitting(true);
 
-    // Simulated send — replace with a real request to your backend/email service
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      // The payload 'values' now automatically includes 'phone'
+      await postData('contact', values); 
       setSubmitted(true);
-    }, 700);
+    } catch (error) {
+      console.error("Submission error:", error);
+      setServerError('Something went wrong. Please try again later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="contact-page">
-      <nav className="nav">
-        <div className="brand">Maison<span>.</span></div>
-        <div className="nav-links">
-          <a href="#">Home</a>
-          <a href="#">About</a>
-          <a href="#">Services</a>
-          <a href="#" className="active">Contact</a>
-        </div>
-      </nav>
-
       <section className="hero">
         <span className="eyebrow">Get in Touch</span>
         <h1>Let&apos;s start a <em>conversation</em></h1>
@@ -131,6 +137,8 @@ export default function Contact() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate>
+              {serverError && <div className="server-error-msg">{serverError}</div>}
+              
               <div className="form-row">
                 <div className={`field${errors.name ? ' error' : ''}`}>
                   <label htmlFor="name">Full Name</label>
@@ -158,17 +166,32 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className={`field${errors.subject ? ' error' : ''}`}>
-                <label htmlFor="subject">Subject</label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  placeholder="How can we help?"
-                  value={values.subject}
-                  onChange={handleChange}
-                />
-                {errors.subject && <div className="error-msg">{errors.subject}</div>}
+              {/* Second Row: Phone and Subject */}
+              <div className="form-row">
+                <div className={`field${errors.phone ? ' error' : ''}`}>
+                  <label htmlFor="phone">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+1 (555) 000-0000"
+                    value={values.phone}
+                    onChange={handleChange}
+                  />
+                  {errors.phone && <div className="error-msg">{errors.phone}</div>}
+                </div>
+                <div className={`field${errors.subject ? ' error' : ''}`}>
+                  <label htmlFor="subject">Subject</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    placeholder="How can we help?"
+                    value={values.subject}
+                    onChange={handleChange}
+                  />
+                  {errors.subject && <div className="error-msg">{errors.subject}</div>}
+                </div>
               </div>
 
               <div className={`field${errors.message ? ' error' : ''}`}>

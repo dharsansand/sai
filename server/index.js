@@ -7,14 +7,71 @@ import path from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
 import fs from 'fs';
+import pkg from 'whatsapp-web.js';
 
+import qrcode from 'qrcode-terminal';
 
 import userRoutes from "./routes/user.js";
 import brannerRoutes from "./routes/branner.js";
 import category from "./routes/category.js"
 import allrunapi from "./routes/allrunapi.js"
+import contact from "./routes/contact.js"
 dotenv.config();
 const app = express();
+
+const { Client, LocalAuth } = pkg;
+export const whatsappClient = new Client({
+    authStrategy: new LocalAuth(), 
+    // FIX: This avoids the "WhatsApp Web version is too old" error
+    webVersionCache: {
+        type: 'remote',
+        remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-js/main/dist/wppconnect-wa.js',
+    },
+    puppeteer: {
+        handleSIGINT: false,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process', 
+            '--disable-gpu'
+        ],
+    }
+});
+whatsappClient.on('qr', (qr) => {
+    console.log('--- WHATSAPP QR RECEIVED ---');
+    qrcode.generate(qr, { small: true });
+    console.log('Scan the QR code above with your phone.');
+});
+whatsappClient.on('ready', () => {
+    console.log('✅ WhatsApp Client is connected and ready!');
+});
+
+// Handle Authentication Failure
+whatsappClient.on('auth_failure', (msg) => {
+    console.error('❌ WhatsApp Authentication failure:', msg);
+});
+
+// Handle Disconnection
+whatsappClient.on('disconnected', (reason) => {
+    console.log('⚠️ WhatsApp was logged out:', reason);
+});
+
+// Initialize with error catch to prevent server crash
+whatsappClient.initialize().catch(err => {
+    console.error('❌ Failed to initialize WhatsApp:', err);
+});
+
+
+
+
+
+
+
+
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim()) 
   : [];
@@ -58,6 +115,7 @@ mongoose
 app.use("/api/users", userRoutes);
 app.use("/api/banner", brannerRoutes);
 app.use("/api/category",category);
+app.use("/api/contact",contact)
 app.use("/api/alltimeapi",allrunapi)
 
 // Start server
