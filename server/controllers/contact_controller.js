@@ -3,21 +3,16 @@ import { whatsappClient } from "../index.js";
 export const postContact = async (req, res) => {
     try {
         console.log("========== CONTACT API ==========");
-        console.log("Request body:", req.body);
-
         const { name, email, subject, message, phone } = req.body;
 
-        console.log("Name:", name);
-        console.log("Phone:", phone);
-        console.log("Email:", email);
-        console.log("Subject:", subject);
-        console.log("Message:", message);
-
-        if (!name || !phone || !email || !subject || !message) {
-            return res.status(400).json({
+        // 1. Check if WhatsApp is actually connected
+        // If whatsappClient.info is undefined, it means you are NOT logged in.
+        if (!whatsappClient || !whatsappClient.info || !whatsappClient.info.wid) {
+            console.error("❌ WhatsApp is not ready. sendMessage skipped.");
+            return res.status(503).json({
                 success: false,
-                error: "All fields are required",
-                received: req.body
+                error: "WhatsApp service is not connected yet.",
+                details: "Please scan the QR code at /api/whatsapp/qr first."
             });
         }
 
@@ -34,12 +29,9 @@ export const postContact = async (req, res) => {
 
         const myWhatsAppId = "919384428585@c.us";
 
-        console.log("WhatsApp Client:", !!whatsappClient);
-        console.log("Sending WhatsApp message...");
-
+        // 2. Send the message
         await whatsappClient.sendMessage(myWhatsAppId, text);
-
-        console.log("WhatsApp message sent successfully");
+        console.log("✅ WhatsApp message sent successfully");
 
         return res.status(200).json({
             success: true,
@@ -48,10 +40,6 @@ export const postContact = async (req, res) => {
 
     } catch (error) {
         console.error("========== WHATSAPP ERROR ==========");
-        console.error(error);
-        console.error("Message:", error?.message);
-        console.error("Stack:", error?.stack);
-
         return res.status(500).json({
             success: false,
             error: "Failed to send notification",
