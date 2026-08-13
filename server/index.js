@@ -39,26 +39,20 @@ const sessionPath = path.join(process.cwd(), ".wwebjs_auth");
 // =====================================================
 
 export const whatsappClient = new Client({
-
-    authStrategy: new LocalAuth({
-        clientId: "sai-whatsapp",
-        dataPath: sessionPath
-    }),
-
+    authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-
         args: [
-            "--no-sandbox",
-            "--disable-setuid-sandbox",
-            "--disable-dev-shm-usage",
-            "--single-process",
-            "--no-zygote",
-            "--disable-gpu",
-            "--disable-canvas-aa",
-            "--disable-2d-canvas-clip-aa",
-            "--disable-gl-drawing-for-tests"
-        ]
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--single-process', // This is the most important for RAM
+            '--no-zygote',
+            '--disable-gpu',
+            '--disable-extensions',
+            '--disable-setuid-sandbox',
+            '--js-flags="--max-old-space-size=400"' // Limits JavaScript memory
+        ],
     }
 });
 
