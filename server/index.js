@@ -34,31 +34,58 @@ export const whatsappClient = new Client({
             '--disable-dev-shm-usage',
             '--single-process',
             '--no-zygote',
-            '--disable-gpu'
+            '--disable-gpu',
+            '--disable-canvas-aa', 
+            '--disable-2d-canvas-clip-aa',
+            '--disable-gl-drawing-for-tests'
         ],
     }
 });
 
+// 1. QR Code Event
 whatsappClient.on('qr', (qr) => {
-    latestQr = qr; // Save the QR string for the web link
+    latestQr = qr; 
     console.log('--- WHATSAPP QR RECEIVED ---');
     qrcode.generate(qr, { small: true });
     console.log('If the QR above is distorted, go to: /api/whatsapp/qr');
 });
 
+// 2. Loading Progress Event
+whatsappClient.on('loading_screen', (percent, message) => {
+    console.log(`⏳ LOADING PROGRESS: ${percent}% - ${message}`);
+});
+
+// 3. Authentication Event
+whatsappClient.on('authenticated', () => {
+    console.log('✅ WhatsApp Authenticated (Login Success)!');
+});
+
+// 4. Auth Failure Event
+whatsappClient.on('auth_failure', (msg) => {
+    console.error('❌ WhatsApp Authentication Failure:', msg);
+});
+
+// 5. Ready Event
 whatsappClient.on('ready', () => {
-    latestQr = ""; // Clear QR once connected
+    latestQr = ""; 
     console.log('✅ WhatsApp Client is connected and ready!');
 });
 
+// --- CRITICAL: YOU MUST CALL THIS TO START WHATSAPP ---
 whatsappClient.initialize().catch(err => {
     console.error('❌ Failed to initialize WhatsApp:', err);
 });
 
+// Heartbeat log
+setInterval(() => {
+    if (whatsappClient && whatsappClient.info) {
+        console.log('💓 Heartbeat: WhatsApp Client is active');
+    }
+}, 60000);
+
 // --- NEW ROUTE TO SEE THE QR CODE IMAGE ---
 app.get('/api/whatsapp/qr', (req, res) => {
     if (latestQr) {
-        // This generates a high-quality image from the string
         const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(latestQr)}`;
         res.send(`
             <html>
