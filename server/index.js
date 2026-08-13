@@ -20,16 +20,20 @@ dotenv.config();
 const app = express();
 
 const { Client, LocalAuth } = pkg;
-export const whatsappClient = new Client({
-    authStrategy: new LocalAuth(), 
-    // FIX: This avoids the "WhatsApp Web version is too old" error
-    webVersionCache: {
-        type: 'remote',
-        remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-js/main/dist/wppconnect-wa.js',
-    },
+export const whatsappClient =  new Client({
+    authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-     args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process', // Critical for Render's limited RAM
+            '--disable-gpu'
+        ],
     }
 });
 whatsappClient.on('qr', (qr) => {
