@@ -28,7 +28,7 @@ export const whatsappClient = new Client({
         remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-js/main/dist/wppconnect-wa.js',
     },
     puppeteer: {
-        handleSIGINT: false,
+        headless: true,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
