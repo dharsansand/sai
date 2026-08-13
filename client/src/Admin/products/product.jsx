@@ -14,7 +14,7 @@ import Checkinputbox from "../../components/common/checkbox";
 import { Button, Popconfirm } from "antd";
 import { ToastSuccess } from "../../components/common/toast";
 import "../../Admin/common.css";
-import Select from "../../components/common/select";
+import Select from "../../components/common/Select";
 import Editor from "../../components/common/Editer";
 import CommonUpload from "../../components/common/upload";
 
