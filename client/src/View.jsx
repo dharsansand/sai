@@ -6,6 +6,7 @@ import Footer from "./components/common/Footer";
 import Loader from "./components/common/Loader";
 import Products from "./Views/products";
 import ProductDetails from "./Views/ProductDetails";
+import Contact from "./Views/Contact";
 
 const View = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +30,7 @@ const View = () => {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<Products />} />
         <Route path="/productDetails/:slug" element={<ProductDetails />} />
+        <Route path="/contact" element={<Contact/>}/>
       </Routes>
       <Footer />
     </>
