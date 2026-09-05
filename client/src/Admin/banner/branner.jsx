@@ -16,22 +16,18 @@ import Upload from "../../components/common/upload";
 import { ToastSuccess } from "../../components/common/toast";
 import BrannervalidationSchema from "./brannervalidation";
 import "../../Admin/common.css";
+import { useGetHomeBannersQuery } from "../../services/bannerHomeApi";
 const Branner = () => {
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
   const [editData, setEditData] = useState(null);
+  const { data: banner = [], isLoading, refetch } = useGetHomeBannersQuery();
+    const data = Array.isArray(banner) ? banner : [];
 
-  const fetchUsers = async () => {
-    try {
-      const res = await getData("banner");
-      console.log("res", res);
-      setData(Array.isArray(res.data?.data) ? res.data?.data : []);
-    } catch (error) {
-      console.error("Failed to fetch users", error);
-    }
+  const fetchUsers = () => {
+    refetch();
   };
-
   useEffect(() => {
     fetchUsers();
   }, []);

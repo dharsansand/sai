@@ -1,4 +1,5 @@
 import category from "../models/category.js";
+import { encryptData } from "./encryptedData.js";
 export const categoryImageUpload = async (req, res) => {
   try {
     if (!req.file) {
@@ -26,7 +27,7 @@ export const homecategory = async (req, res) => {
       .sort({ createdAt: -1 }) 
       .limit(limit);             
 
-    res.status(200).json(categorys);
+    res.status(200).json(encryptData(categorys));
   } catch (error) {
     res.status(500).json({
       message: "Error fetching category data",

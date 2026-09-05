@@ -1,5 +1,6 @@
 import product from "../models/product.js";
 import category from "../models/category.js";
+import { encryptData } from "./encryptedData.js";
 export const productImageUpload = async (req, res) => {
   try {
     if (!req.file) {
@@ -99,7 +100,7 @@ export const productAllData = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        data: productData
+        data: encryptData(productData)
       });
     }
 
@@ -113,7 +114,7 @@ export const productAllData = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: productData
+      data: encryptData(productData)
     });
 
   } catch (error) {

@@ -17,40 +17,33 @@ import "../../Admin/common.css";
 import Select from "../../components/common/Select";
 import Editor from "../../components/common/Editer";
 import CommonUpload from "../../components/common/upload";
+import { useGetProductsQuery } from "../../services/productApi";
+import { useGetHomeCategoryQuery } from "../../services/categoryHomeAPI";
 
 const Product = () => {
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [editData, setEditData] = useState(null);
-  const [dropdownOptions, setDropdownOptions] = useState([]);
+ 
 
-  // Fetch Products for the Table
-  const fetchUsers = async () => {
-    try {
-      const res = await getData("product");
-      setData(Array.isArray(res.data?.data) ? res.data?.data : []);
-    } catch (error) {
-      console.error("Failed to fetch products", error);
-    }
+  const { data: products = [], isLoading, refetch } = useGetProductsQuery();
+  const data = Array.isArray(products) ? products : [];
+
+  const fetchUsers = () => {
+    refetch();
   };
+ 
+ 
 
-  // Fetch Categories for Dropdown
-  const fetchDropdownOptions = async () => {
-    try {
-      const res = await getData("category");
-      const options = res.data?.data.map((item) => ({
-        label: item.title,
-        value: item._id,
-      }));
-      setDropdownOptions(options);
-    } catch (error) {
-      console.error("Failed to fetch dropdown options", error);
-    }
-  };
 
+   const { data: categoryData = [] } = useGetHomeCategoryQuery();
+   const dropdownOptions = categoryData.map((item) => ({
+    label: item.title,
+    value: item._id,
+  }));
   useEffect(() => {
     fetchUsers();
-    fetchDropdownOptions();
+    // fetchDropdownOptions();
   }, []);
 
   const handleCancel = (formik) => {

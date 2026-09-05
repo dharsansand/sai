@@ -1,4 +1,5 @@
 import { api } from "./api";
+import { decryptData } from "./cryptoHelper";
 
 export const productApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -8,6 +9,8 @@ export const productApi = api.injectEndpoints({
         
         params: categoryId ? { category: categoryId } : {},
       }),
+      
+            transformResponse: (response) => decryptData(response),
       providesTags: ["Product"],
     }),
   }),

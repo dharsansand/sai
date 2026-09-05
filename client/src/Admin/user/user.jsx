@@ -17,22 +17,20 @@ import PasswordInput from "../../components/common/password";
 import Checkinputbox from "../../components/common/checkbox";
 import { ToastSuccess, ToastError } from "../../components/common/toast";
 import "../../Admin/common.css";
+import { useGetUsersQuery } from "../../services/users";
 
 const User = () => {
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState([]);
   const [editData, setEditData] = useState(null);
 
-  // ================= FETCH USERS =================
-  const fetchUsers = async () => {
-    try {
-      const res = await getData("users");
-      setData(Array.isArray(res.data) ? res.data : []);
-    } catch (error) {
-      console.error("Failed to fetch users", error);
-    }
-  };
-
+ const { data: users = [], isLoading, refetch } = useGetUsersQuery();
+   const data = Array.isArray(users) ? users : [];
+ 
+   const fetchUsers = () => {
+     refetch();
+   };
+  
+  
   useEffect(() => {
     fetchUsers();
   }, []);

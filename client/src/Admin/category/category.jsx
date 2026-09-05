@@ -17,22 +17,21 @@ import { ToastSuccess } from "../../components/common/toast";
 // import BrannervalidationSchema from "./brannervalidation";
 import "../../Admin/common.css";
 import categoryvalidationSchema from "./categoryValidation";
+import { useGetHomeCategoryQuery } from "../../services/categoryHomeAPI";
 const Category = () => {
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
   const [editData, setEditData] = useState(null);
 
-  const fetchUsers = async () => {
-    try {
-      const res = await getData("category");
-      console.log("res", res);
-      setData(Array.isArray(res.data?.data) ? res.data?.data : []);
-    } catch (error) {
-      console.error("Failed to fetch users", error);
-    }
-  };
+  
+    const { data: category = [], isLoading, refetch } = useGetHomeCategoryQuery();
+    const data = Array.isArray(category) ? category : [];
 
+  const fetchUsers = () => {
+    refetch();
+  };
+ 
   useEffect(() => {
     fetchUsers();
   }, []);

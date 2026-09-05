@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Input, Button } from 'antd';
 import { jwtDecode } from 'jwt-decode';
 import config from '../config';
-import Lightfall from './Lightfall'
+import Lightfall from './Lightfall';
 import './AdminLogin.css';
 import { ToastSuccess } from '../components/common/toast';
 
@@ -28,16 +28,16 @@ const AdminLoginForm = () => {
       if (token) {
         const decoded = jwtDecode(token);
         const expiry = decoded.exp * 1000;
+        
+        // 1. Store Token
         localStorage.setItem('token', token);
         localStorage.setItem('tokenExpiry', expiry);
 
-        const userRes = await axios.get(`${config.apiUrl}/users/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        localStorage.setItem('current   aUser', JSON.stringify(userRes.data)); 
-              ToastSuccess("Login Successfully");
-               resetForm();
+        ToastSuccess("Login Successfully");
+        resetForm();
+        
+        // 2. Navigate directly to dashboard!
+        // ProtectedPage will automatically fetch and decrypt /users/me
         navigate('/admin/dashboard');
       } else {
         alert('Login failed: No token received');
@@ -49,6 +49,7 @@ const AdminLoginForm = () => {
     }
   };
 
+  // If already logged in with valid token, redirect to dashboard
   useEffect(() => {
     const token = localStorage.getItem('token');
     const expiry = localStorage.getItem('tokenExpiry');
@@ -59,12 +60,10 @@ const AdminLoginForm = () => {
 
   return (
     <div className="admin-page-wrapper">
-      {/* Background Component */}
       <div className="background-layer">
         <Lightfall
-           
-  colors={['#FFD700', '#D4AF37', '#F9E2AF', '#B8860B', '#FFDF00']}
-  backgroundColor="#050400"                                                        
+          colors={['#FFD700', '#D4AF37', '#F9E2AF', '#B8860B', '#FFDF00']}
+          backgroundColor="#050400"                                                        
           speed={0.5}
           streakCount={2}
           streakWidth={1}

@@ -1,5 +1,6 @@
 import banner from "../models/banner.js";
-import CryptoJS from "crypto-js";
+import { encryptData } from "./encryptedData.js";
+
 
 export const bannerImageUpload = async (req, res) => {
   try {
@@ -21,7 +22,7 @@ export const bannerImageUpload = async (req, res) => {
 };
 
 
-const SECRET_KEY = process.env.SECRET_KEY || "my-secret-key-123";
+
 
 export const homeBranner = async (req, res) => {
   try {
@@ -29,14 +30,8 @@ export const homeBranner = async (req, res) => {
       .find({ Active: true, isdelete: false })
       .sort({ createdAt: -1 });
 
-    // 1. Encrypt the banners data
-    const encryptedData = CryptoJS.AES.encrypt(
-      JSON.stringify(banners),
-      SECRET_KEY
-    ).toString();
+     res.status(200).json({ data: encryptData(banners) });
 
-    // 2. Send the encrypted string
-    res.status(200).json({ data: encryptedData });
 
   } catch (error) {
     res.status(500).json({ 

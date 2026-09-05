@@ -1,16 +1,19 @@
 import { api } from "./api";
+import { decryptData } from "./cryptoHelper";
 
 export const categoryApi = api.injectEndpoints({
   endpoints: (builder) => ({
  
     getHomeCategory: builder.query({
       query: (params) => {
-        const limit = params?.limit || params || 4;
+     
         return {
           url: "category/home",
-          params: { limit },
+          params: params,
         };
       },
+
+      transformResponse: (response) => decryptData(response),
       providesTags: ["Category"],
     }),
   }),

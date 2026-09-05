@@ -1,40 +1,48 @@
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { CommonData } from "../Context";
-import { getData } from "../Api/apiRequest";
+import { useGetMeQuery } from "../services/meApi";
+
 
 const ProtectedPage = () => {
-  const { adminCurrentUser, setAdminCurrentUser } = CommonData();
   const navigate = useNavigate();
+  const { setAdminCurrentUser } = CommonData();
+  
+  const token = localStorage.getItem("token");
+
+  const { data: user, isLoading, isError, error } = useGetMeQuery(undefined, {
+    skip: !token,
+  });
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return navigate("/admin/login", { replace: true });
+   
+    if (!token) {
+      navigate("/admin/login", { replace: true });
+      return;
+    }
 
-      try {
-        const response = await getData("users/me"); 
-        console.log("response",response)
-        setAdminCurrentUser(response.data); 
+  
+    if (isError) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("tokenExpiry");
+      localStorage.removeItem("currentUser");
+      setAdminCurrentUser(null);
+      navigate("/admin/login", { replace: true });
+    }
 
-        if(response?.status === 401){
-             localStorage.removeItem("token");
-        localStorage.removeItem("tokenExpiry");
-        localStorage.removeItem("currentUser")
-        navigate("/admin/login", { replace: true });
+    if (user) {
+      setAdminCurrentUser(user);
+    }
+  }, [token, user, isError, navigate, setAdminCurrentUser]);
 
-        }
-      } catch (err) {
-        
-        localStorage.removeItem("token");
-        localStorage.removeItem("tokenExpiry");
-        navigate("/admin/login", { replace: true });
-      }
-    };
-    fetchUser();
-  }, [navigate, setAdminCurrentUser]);
-
-  if (!adminCurrentUser) return null; // loader or blank screen until user is fetched
+  
+  if (!token || isLoading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <p>Verifying session...</p>
+      </div>
+    );
+  }
 
   return <Outlet />;
 };
