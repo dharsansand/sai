@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { getData } from "../Api/apiRequest";
+import { useGetHomeCategoryQuery } from "../services/categoryHomeAPI";
 
-// --- Skeleton Component for Category Buttons ---
+// Skeleton Component
 const CategorySkeleton = () => (
   <>
     {[1, 2, 3, 4].map((i) => (
@@ -16,41 +16,36 @@ const CategorySkeleton = () => (
   </>
 );
 
-export default function ProductCategory({ active, onSelect }) {
-  const [apiCategories, setApiCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // 1. Added loading state
+export default function ProductCategory({ onSelect }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-    const fetchCategory = async () => {
-      setIsLoading(true); // Start loading
-      try {
-        const response = await getData("category");
-        const data = response?.data || response;
-        
-        if (Array.isArray(data)) {
-          setApiCategories(data);
-        } else if (data?.data) {
-          setApiCategories(data.data);
-        }
-      } catch (error) { 
-        console.error(error); 
-      } finally {
-        setIsLoading(false); // 2. Stop loading
-      }
-    };
-    fetchCategory();
-  }, []);
+  const { data: apiCategories = [], isLoading } = useGetHomeCategoryQuery();
+
+  // 1. Get whatever is after "/products/" from the URL
+  // e.g. "/products/dfbfbrh5" -> "dfbfbrh5"
+  // e.g. "/products" -> undefined
+  const currentUrlParam = location.pathname.split("/")[2];
+
+  // 2. Determine if "All" is active (no slug in URL)
+  const isAllActive = !currentUrlParam || currentUrlParam === "All";
 
   const handleCategoryClick = (cat) => {
     if (cat === "All") {
-      onSelect("All");
+      onSelect?.("All");
       navigate("/products");
     } else {
-      onSelect(cat.title);
-      navigate(`/products/${cat.slug}`);
+      onSelect?.(cat);
+      // Navigate to cat.slug (or cat._id)
+      navigate(`/products/${cat.slug || cat._id}`);
     }
   };
+
+  // Find active category to show title on mobile
+  const activeCategory = apiCategories.find(
+    (c) => c.slug === currentUrlParam || c.title === currentUrlParam || c._id === currentUrlParam
+  );
+  const activeLabel = isAllActive ? "All" : (activeCategory?.title || currentUrlParam);
 
   return (
     <div className="category-sidebar-card">
@@ -59,36 +54,43 @@ export default function ProductCategory({ active, onSelect }) {
       <div className="mobile-category-header">
         <div className="mobile-active-label">
           <small>COLLECTION</small>
-          <span>{active}</span>
+          <span>{activeLabel}</span>
         </div>
 
         <div className="category-list-wrapper">
           <div className="category-list-scroll">
-            {/* 3. Conditional Rendering for Skeletons */}
             {isLoading ? (
               <CategorySkeleton />
             ) : (
               <>
-                {/* All Button */}
+                {/* 3. "All" Button */}
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleCategoryClick("All")}
-                  className={`category-item-btn ${active === "All" ? "active" : ""}`}
+                  className={`category-item-btn ${isAllActive ? "active" : ""}`}
                 >
                   All
                 </motion.button>
 
-                {/* Dynamic Buttons */}
-                {apiCategories.map((cat) => (
-                  <motion.button
-                    key={cat._id}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleCategoryClick(cat)}
-                    className={`category-item-btn ${active === cat.title ? "active" : ""}`}
-                  >
-                    {cat.title}
-                  </motion.button>
-                ))}
+                {/* 4. Dynamic Category Buttons */}
+                {apiCategories.map((cat) => {
+                  // Checks if cat.slug, cat.title, or cat._id matches the URL
+                  const isActive = 
+                    currentUrlParam === cat.slug || 
+                    currentUrlParam === cat.title || 
+                    currentUrlParam === cat._id;
+
+                  return (
+                    <motion.button
+                      key={cat._id}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleCategoryClick(cat)}
+                      className={`category-item-btn ${isActive ? "active" : ""}`}
+                    >
+                      {cat.title}
+                    </motion.button>
+                  );
+                })}
               </>
             )}
           </div>

@@ -7,6 +7,7 @@ import "../css/product/products.css";
 import ProductsCard from "./productcard";
 import ProductCategory from "./productcategory";
 import { getData } from "../Api/apiRequest";
+import { useGetProductsQuery } from "../services/productApi";
 
 // --- Skeleton Component ---
 const ProductSkeleton = () => (
@@ -30,27 +31,14 @@ const ProductSkeleton = () => (
 
 export default function Products() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [productsData, setProductsData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // 1. Added loading state
+
+
   const { id } = useParams();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setIsLoading(true); // Start loading
-      try {
-        const url = id ? `product?category=${id}` : "product";
-        const response = await getData(url);
-        const data = response?.data?.data || response?.data || response;
-        setProductsData(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setProductsData([]);
-      } finally {
-        setIsLoading(false); // 2. Stop loading regardless of success/error
-      }
-    };
-    fetchProducts();
-  }, [id]);
+  const { data: response, isLoading } = useGetProductsQuery(id);
+
+  const rawData = response?.data?.data || response?.data || response;
+  const productsData = Array.isArray(rawData) ? rawData : [];
 
   return (
     <div className="products-page-wrapper">

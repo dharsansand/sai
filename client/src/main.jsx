@@ -6,9 +6,12 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import View from "./View";
 import { DataProvider } from "./Context";
 import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const RootComponent = () => {
   return (
+     <Provider store={store}>
     <BrowserRouter>
     <ToastContainer
           position="top-right"
@@ -28,6 +31,7 @@ const RootComponent = () => {
         </Routes>
       </DataProvider>
     </BrowserRouter>
+    </Provider>
   );
 };
 

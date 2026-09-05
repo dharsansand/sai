@@ -3,28 +3,14 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import "../css/homecategory/CategoryHome.css";
 import { getData } from '../Api/apiRequest';
+import { useGetHomeCategoryQuery } from '../services/categoryHomeAPI';
 
 export default function CategoryHome() {
   const navigate = useNavigate();
 
-  const [CategoryData, setCategoryData] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        const response = await getData("category/home?limit=4");
-        const data = response?.data || response;
-        setCategoryData(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchCategory();
-  }, []);
+  const { data: CategoryData = [], loading } = useGetHomeCategoryQuery({ limit: 4 });
 
   const SkeletonCard = () => (
     <div className="rb-cat-card skeleton">
@@ -105,7 +91,10 @@ export default function CategoryHome() {
                   className="rb-cat-card"
                   variants={cardVariants}
                   whileHover={{ y: -10 }}
-                  onClick={() => navigate(`/products/${item.slug}`)}
+                 onClick={() => {
+    navigate(`/products/${item.slug}`);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scrolls smoothly to top
+  }}
                 >
                   <div className="rb-cat-image-wrapper">
                     <img

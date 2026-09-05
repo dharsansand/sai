@@ -1,28 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiArrowRight, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import '../css/banner/Banner.css';
-import { getData } from '../Api/apiRequest';
+import { useGetHomeBannersQuery } from '../services/bannerHomeApi';
 
 const Banner = () => {
-  const [banners, setBanners] = useState([]);
   const [current, setCurrent] = useState(0);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchBanner = async () => {
-      try {
-        const response = await getData("banner/home");
-        const data = response?.data || response;
-        setBanners(data);
-      } catch (error) {
-        console.error("Error fetching banner data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchBanner();
-  }, []);
+  const { data: banners = [], isLoading } = useGetHomeBannersQuery();
 
   const length = banners.length;
 
@@ -36,8 +21,8 @@ const Banner = () => {
     setCurrent(current === 0 ? length - 1 : current - 1);
   };
 
-  // --- SKELETON RENDER ---
-  if (loading) {
+  // --- 2. SKELETON RENDER (Uses built-in isLoading) ---
+  if (isLoading) {
     return (
       <div className="banner-skeleton">
         <div className="skeleton-content">
@@ -82,7 +67,7 @@ const Banner = () => {
           <div className="banner__container">
             <div className="banner__content">
               <motion.span className="banner__subtitle" initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay: 0.2}}>
-                {currentItem.subTitle || currentItem.subtitle}
+                {currentItem.subTitle}
               </motion.span>
 
               <motion.h1 className="banner__title" initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay: 0.4}}>
@@ -90,7 +75,7 @@ const Banner = () => {
               </motion.h1>
 
               <motion.p className="banner__description" initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay: 0.6}}>
-                {currentItem.content || currentItem.description}
+                {currentItem.content}
               </motion.p>
 
               <motion.div className="banner__actions" initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay: 0.8}}>
